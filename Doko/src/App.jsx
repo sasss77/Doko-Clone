@@ -29,6 +29,7 @@ import OrderManagementPage from "./Admin/OrderManagement";
 import ProductManagementPage from "./Admin/ProductManagements";
 import SellerManagementPage from "./Admin/SellerManagement";
 import UserManagementPage from "./Admin/Usermanagement";
+import AdminProfile from "./Admin/AdminProfile";
 
 
 const App = () => {
@@ -60,6 +61,7 @@ const App = () => {
         <Route path="/admin/OrderManagement" element={<OrderManagementPage />} />
         <Route path="/admin/Product" element={<ProductManagementPage />} />
         <Route path="/admin/sellermanagement" element={<SellerManagementPage />} />
+        <Route path="/admin/profile" element={<AdminProfile />} />
         
         {/* Catch all route - should be last */}
         <Route path="/*" element={<NotFound />} />  
