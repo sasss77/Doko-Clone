@@ -41,29 +41,28 @@ import NotFoundPage from './components/error/NotFoundPage';
 
 // Import Styles
 import './styles/globals.css';
-import './styles/components.css';
 import './styles/animations.css';
 
 
 // Protected Route Component
 const ProtectedRoute = ({ children, requiredRole = null }) => {
   const { user, isAuthenticated } = useContext(AuthContext);
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: window.location.pathname }} replace />;
   }
-  
+
   if (requiredRole && user?.role !== requiredRole) {
     return <Navigate to="/" replace />;
   }
-  
+
   return children;
 };
 
 // Public Route Component (redirects authenticated users)
 const PublicRoute = ({ children }) => {
   const { isAuthenticated, user } = useContext(AuthContext);
-  
+
   if (isAuthenticated) {
     // Redirect based on user role
     switch (user?.role) {
@@ -75,7 +74,7 @@ const PublicRoute = ({ children }) => {
         return <Navigate to="/" replace />;
     }
   }
-  
+
   return children;
 };
 
@@ -94,20 +93,20 @@ function App() {
                       {/* Public Routes */}
                       <Route path="/" element={<HomePage />} />
                       <Route path="/home" element={<Navigate to="/" replace />} />
-                      
+
                       {/* Product & Category Routes */}
                       <Route path="/categories" element={<CategoriesPage />} />
                       <Route path="/products" element={<Navigate to="/categories" replace />} />
                       <Route path="/products/:category" element={<ProductListingPage />} />
                       <Route path="/product/:id" element={<ProductDetailsPage />} />
                       <Route path="/search" element={<SearchResultsPage />} />
-                      
+
                       {/* Information Pages */}
                       <Route path="/about" element={<AboutPage />} />
                       <Route path="/contact" element={<ContactPage />} />
                       <Route path="/privacy" element={<PrivacyPage />} />
                       <Route path="/terms" element={<TermsPage />} />
-                      
+
                       {/* Authentication Routes (Public Only) */}
                       <Route path="/login" element={
                         <PublicRoute>
@@ -121,7 +120,7 @@ function App() {
                       } />
                       <Route path="/signup" element={<Navigate to="/register" replace />} />
                       <Route path="/signin" element={<Navigate to="/login" replace />} />
-                      
+
                       {/* Protected Customer Routes */}
                       <Route path="/cart" element={
                         <ProtectedRoute>
@@ -160,14 +159,14 @@ function App() {
                           <ProfilePage />
                         </ProtectedRoute>
                       } />
-                      
+
                       {/* Category Specific Routes */}
                       <Route path="/musical-instruments" element={<Navigate to="/products/musical-instruments" replace />} />
                       <Route path="/handicrafts" element={<Navigate to="/products/handicrafts" replace />} />
                       <Route path="/clothing" element={<Navigate to="/products/clothing" replace />} />
                       <Route path="/tools-crafts" element={<Navigate to="/products/tools-crafts" replace />} />
                       <Route path="/grocery" element={<Navigate to="/products/grocery" replace />} />
-                      
+
                       {/* Admin Routes (Future Implementation) */}
                       <Route path="/admin/*" element={
                         <ProtectedRoute requiredRole="admin">
@@ -177,7 +176,7 @@ function App() {
                           </div>
                         </ProtectedRoute>
                       } />
-                      
+
                       {/* Seller Routes (Future Implementation) */}
                       <Route path="/seller/*" element={
                         <ProtectedRoute requiredRole="seller">
@@ -187,7 +186,7 @@ function App() {
                           </div>
                         </ProtectedRoute>
                       } />
-                      
+
                       {/* Legacy/Alternative Route Names */}
                       <Route path="/shop" element={<Navigate to="/categories" replace />} />
                       <Route path="/store" element={<Navigate to="/categories" replace />} />
@@ -195,7 +194,7 @@ function App() {
                       <Route path="/bag" element={<Navigate to="/cart" replace />} />
                       <Route path="/payment" element={<Navigate to="/checkout" replace />} />
                       <Route path="/success" element={<Navigate to="/thank-you" replace />} />
-                      
+
                       {/* 404 - Catch-all route */}
                       <Route path="*" element={<NotFoundPage />} />
                     </Routes>

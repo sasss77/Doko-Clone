@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  HeartIcon, 
-  GlobeAltIcon, 
+import {
+  HeartIcon,
+  GlobeAltIcon,
   UserGroupIcon,
   TrophyIcon,
   MapPinIcon,
@@ -41,24 +41,24 @@ const AboutPage = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      
+
       // Animate counters
       const duration = 2000;
       const steps = 50;
       const interval = duration / steps;
-      
+
       let currentStep = 0;
       const timer = setInterval(() => {
         currentStep++;
         const progress = currentStep / steps;
-        
+
         setStats({
           artisans: Math.floor(finalStats.artisans * progress),
           products: Math.floor(finalStats.products * progress),
           districts: Math.floor(finalStats.districts * progress),
           customers: Math.floor(finalStats.customers * progress)
         });
-        
+
         if (currentStep >= steps) {
           clearInterval(timer);
           setStats(finalStats);
@@ -77,7 +77,7 @@ const AboutPage = () => {
 
   const teamMembers = [
     {
-      name: 'Rajesh Tamang',
+      name: 'Saugat Paneru',
       role: 'Founder & CEO',
       bio: 'A passionate advocate for Nepali culture with 15+ years in traditional crafts',
       image: '/api/placeholder/150/150',
@@ -85,7 +85,7 @@ const AboutPage = () => {
       quote: 'Every product tells a story of our heritage'
     },
     {
-      name: 'Sita Sharma',
+      name: 'Rajiv Ganeju',
       role: 'Head of Artisan Relations',
       bio: 'Connecting with artisans across Nepal to preserve traditional techniques',
       image: '/api/placeholder/150/150',
@@ -93,7 +93,7 @@ const AboutPage = () => {
       quote: 'Supporting artisans is supporting our culture'
     },
     {
-      name: 'Amit Gurung',
+      name: 'Aayush Yadav',
       role: 'Product Quality Manager',
       bio: 'Ensuring every product meets our high standards of authenticity',
       image: '/api/placeholder/150/150',
@@ -101,7 +101,7 @@ const AboutPage = () => {
       quote: 'Quality is our promise to customers'
     },
     {
-      name: 'Priya Rai',
+      name: 'Sandis Prajapati',
       role: 'Cultural Heritage Specialist',
       bio: 'Documenting and preserving the stories behind each craft',
       image: '/api/placeholder/150/150',
@@ -217,7 +217,7 @@ const AboutPage = () => {
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='40' cy='40' r='6'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
           }} />
         </div>
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <div className="text-6xl mb-6">🧺</div>
@@ -228,7 +228,7 @@ const AboutPage = () => {
               हाम्रो कथा - Our Story
             </p>
             <p className="text-xl leading-relaxed max-w-3xl mx-auto mb-8">
-              Born from a deep love for Nepal's rich cultural heritage, Doko connects authentic 
+              Born from a deep love for Nepal's rich cultural heritage, Doko connects authentic
               traditional crafts with people worldwide, supporting artisans and preserving ancient techniques.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -297,7 +297,7 @@ const AboutPage = () => {
                 हाम्रो यात्रा - A Journey of Cultural Preservation
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <div>
                 <div className="text-6xl mb-6">🏔️</div>
@@ -305,17 +305,17 @@ const AboutPage = () => {
                   Born in the Himalayas
                 </h3>
                 <p className="text-gray-700 leading-relaxed mb-6">
-                  Doko was founded in 2020 by a group of passionate Nepali entrepreneurs who saw 
-                  traditional crafts disappearing in the digital age. We realized that many skilled 
-                  artisans were struggling to reach global markets, while people worldwide were 
+                  Doko was founded in 2020 by a group of passionate Nepali entrepreneurs who saw
+                  traditional crafts disappearing in the digital age. We realized that many skilled
+                  artisans were struggling to reach global markets, while people worldwide were
                   seeking authentic, handcrafted products with cultural significance.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
-                  Our name "Doko" comes from the traditional Nepali woven basket, symbolizing 
+                  Our name "Doko" comes from the traditional Nepali woven basket, symbolizing
                   our mission to carry and preserve Nepal's cultural treasures to the world.
                 </p>
               </div>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <div className="text-3xl mb-3">🎯</div>
@@ -361,7 +361,7 @@ const AboutPage = () => {
                 मूल्यहरू - The principles that guide us
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {values.map((value, index) => (
                 <Card key={index} className="p-6 text-center hover:shadow-lg transition-shadow">
@@ -385,7 +385,7 @@ const AboutPage = () => {
                 टिम - The passionate people behind Doko
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {teamMembers.map((member, index) => (
                 <Card key={index} className="p-6 text-center hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
@@ -430,10 +430,10 @@ const AboutPage = () => {
                 यात्रा - Milestones in our mission
               </p>
             </div>
-            
+
             <div className="relative">
               <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-red-600 to-blue-600"></div>
-              
+
               <div className="space-y-12">
                 {achievements.map((achievement, index) => (
                   <div key={index} className="relative flex items-center">
@@ -469,7 +469,7 @@ const AboutPage = () => {
                 प्रतिक्रिया - Voices from our community
               </p>
             </div>
-            
+
             <div className="relative">
               <Card className="p-8 text-center">
                 <div className="flex items-center justify-center mb-6">
@@ -477,7 +477,7 @@ const AboutPage = () => {
                     <StarIcon key={i} className="h-6 w-6 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                
+
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden">
                   <img
                     src={testimonials[activeTestimonial].image}
@@ -492,11 +492,11 @@ const AboutPage = () => {
                     {testimonials[activeTestimonial].name.charAt(0)}
                   </div>
                 </div>
-                
+
                 <blockquote className="text-lg italic text-gray-700 mb-4 max-w-2xl mx-auto">
                   "{testimonials[activeTestimonial].message}"
                 </blockquote>
-                
+
                 <div className="font-semibold text-gray-900">
                   {testimonials[activeTestimonial].name}
                 </div>
@@ -504,15 +504,14 @@ const AboutPage = () => {
                   {testimonials[activeTestimonial].role}
                 </div>
               </Card>
-              
+
               <div className="flex justify-center mt-6 space-x-2">
                 {testimonials.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveTestimonial(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === activeTestimonial ? 'bg-red-600' : 'bg-gray-300'
-                    }`}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${index === activeTestimonial ? 'bg-red-600' : 'bg-gray-300'
+                      }`}
                   />
                 ))}
               </div>
@@ -531,7 +530,7 @@ const AboutPage = () => {
                 प्रभाव - Making a difference together
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Card className="p-6 text-center">
                 <div className="text-4xl mb-4">👨‍👩‍👧‍👦</div>
@@ -541,7 +540,7 @@ const AboutPage = () => {
                   Directly supporting artisan families across Nepal through fair trade partnerships.
                 </p>
               </Card>
-              
+
               <Card className="p-6 text-center">
                 <div className="text-4xl mb-4">🎓</div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Skills Preserved</h3>
@@ -550,7 +549,7 @@ const AboutPage = () => {
                   Traditional craft techniques documented and passed to younger generations.
                 </p>
               </Card>
-              
+
               <Card className="p-6 text-center">
                 <div className="text-4xl mb-4">🌍</div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Global Reach</h3>

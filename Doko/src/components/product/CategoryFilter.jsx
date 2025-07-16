@@ -202,35 +202,7 @@ const CategoryFilter = ({
                 ))}
               </div>
 
-              {/* Custom Price Range */}
-              <div className="space-y-2">
-                <p className="text-sm text-gray-600">Custom Range:</p>
-                <div className="flex space-x-2">
-                  <input
-                    type="number"
-                    placeholder="Min"
-                    value={priceInput.min}
-                    onChange={(e) => setPriceInput(prev => ({ ...prev, min: parseInt(e.target.value) || 0 }))}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-                  />
-                  <span className="px-2 py-2 text-gray-500">-</span>
-                  <input
-                    type="number"
-                    placeholder="Max"
-                    value={priceInput.max}
-                    onChange={(e) => setPriceInput(prev => ({ ...prev, max: parseInt(e.target.value) || 50000 }))}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-                  />
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleCustomPriceChange}
-                  fullWidth
-                >
-                  Apply Price Range
-                </Button>
-              </div>
+           
             </div>
           </div>
 
@@ -319,7 +291,7 @@ const CategoryFilter = ({
                     >
                       <XMarkIcon className="h-3 w-3" />
                     </button>
-                  </Badge>
+                  </Badge> 
                 )}
               </div>
             </div>
