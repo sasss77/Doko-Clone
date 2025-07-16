@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, User, Phone, MapPin, Store, FileText, Upload, AlertCircle, Building, CreditCard, Globe } from 'lucide-react';
-import doko from "../assets/doko.png"
+
 
 const SellerRegister = () => {
   const [formData, setFormData] = useState({
