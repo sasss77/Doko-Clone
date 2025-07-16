@@ -12,10 +12,10 @@ import {
   StarIcon,
   ShareIcon
 } from '@heroicons/react/24/outline';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
-import Card from '../components/ui/Card';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Button from '../../components/ui/Button';
+import Badge from '../../components/ui/Badge';
+import Card from '../../components/ui/Card';
 
 const OrderConfirmationPage = () => {
   const location = useLocation();

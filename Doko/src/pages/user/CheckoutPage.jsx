@@ -8,14 +8,14 @@ import {
   ClockIcon,
   CreditCardIcon
 } from '@heroicons/react/24/outline';
-import { CartContext } from '.././context/CartContext';
-import { AuthContext } from '.././context/AuthContext';
-import CheckoutForm from '../components/checkout/CheckoutForm';
-import OrderSummary from '../components/checkout/OrderSummary';
-import DeliveryInfo from '../components/checkout/DeliveryInfo';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
+import { CartContext } from '../.././context/CartContext';
+import { AuthContext } from '../.././context/AuthContext';
+import CheckoutForm from '../../components/checkout/CheckoutForm';
+import OrderSummary from '../../components/checkout/OrderSummary';
+import DeliveryInfo from '../../components/checkout/DeliveryInfo';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Button from '../../components/ui/Button';
+import Badge from '../../components/ui/Badge';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();

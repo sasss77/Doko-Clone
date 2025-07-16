@@ -12,7 +12,6 @@ import {
   AlertTriangle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import Layout from '../../components/admin/Layout';
 
 
 const OverviewPage = () => {
@@ -115,7 +114,6 @@ const OverviewPage = () => {
   };
 
   return (
-    <Layout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
@@ -199,7 +197,6 @@ const OverviewPage = () => {
           </div>
         </div>
       </div>
-    </Layout>
   );
 };
 

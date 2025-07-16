@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  FunnelIcon, 
-  Squares2X2Icon, 
+import {
+  FunnelIcon,
+  Squares2X2Icon,
   ListBulletIcon,
   MagnifyingGlassIcon,
   StarIcon,
   ArrowRightIcon,
   SparklesIcon
 } from '@heroicons/react/24/outline';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import SearchBar from '../components/common/SearchBar';
-import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
-import Card from '../components/ui/Card';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import SearchBar from '../../components/common/SearchBar';
+import Button from '../../components/ui/Button';
+import Badge from '../../components/ui/Badge';
+import Card from '../../components/ui/Card';
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
@@ -207,7 +207,7 @@ const CategoriesPage = () => {
               श्रेणीहरू अन्वेषण गर्नुहोस् - Discover Nepal's Heritage
             </p>
             <p className="text-lg leading-relaxed max-w-2xl mx-auto">
-              Browse through our carefully curated categories of authentic Nepali products. 
+              Browse through our carefully curated categories of authentic Nepali products.
               Each category represents a unique aspect of Nepal's rich cultural heritage and traditional craftsmanship.
             </p>
           </div>
@@ -220,7 +220,7 @@ const CategoriesPage = () => {
           <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
             {/* Search */}
             <div className="w-full lg:w-1/2">
-              <SearchBar 
+              <SearchBar
                 value={searchTerm}
                 onChange={setSearchTerm}
                 placeholder="Search categories..."
@@ -246,21 +246,19 @@ const CategoriesPage = () => {
               <div className="flex items-center bg-gray-100 rounded-lg p-1">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded-md transition-colors ${
-                    viewMode === 'grid' 
-                      ? 'bg-white text-red-600 shadow-sm' 
+                  className={`p-2 rounded-md transition-colors ${viewMode === 'grid'
+                      ? 'bg-white text-red-600 shadow-sm'
                       : 'text-gray-600 hover:text-gray-900'
-                  }`}
+                    }`}
                 >
                   <Squares2X2Icon className="h-5 w-5" />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2 rounded-md transition-colors ${
-                    viewMode === 'list' 
-                      ? 'bg-white text-red-600 shadow-sm' 
+                  className={`p-2 rounded-md transition-colors ${viewMode === 'list'
+                      ? 'bg-white text-red-600 shadow-sm'
                       : 'text-gray-600 hover:text-gray-900'
-                  }`}
+                    }`}
                 >
                   <ListBulletIcon className="h-5 w-5" />
                 </button>
@@ -283,7 +281,7 @@ const CategoriesPage = () => {
                 {searchTerm ? `Results for "${searchTerm}"` : 'All product categories'}
               </p>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <Badge variant="success" className="flex items-center space-x-1">
                 <SparklesIcon className="h-4 w-4" />
@@ -293,15 +291,14 @@ const CategoriesPage = () => {
           </div>
 
           {/* Categories Grid/List */}
-          <div className={`${
-            viewMode === 'grid' 
-              ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8' 
+          <div className={`${viewMode === 'grid'
+              ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'
               : 'space-y-6'
-          }`}>
+            }`}>
             {sortedCategories.map((category) => (
-              <CategoryCard 
-                key={category.id} 
-                category={category} 
+              <CategoryCard
+                key={category.id}
+                category={category}
                 viewMode={viewMode}
               />
             ))}
@@ -317,8 +314,8 @@ const CategoriesPage = () => {
               <p className="text-gray-600 mb-6">
                 Try adjusting your search terms or browse all categories.
               </p>
-              <Button 
-                variant="nepal" 
+              <Button
+                variant="nepal"
                 onClick={() => setSearchTerm('')}
               >
                 Show All Categories
@@ -336,8 +333,8 @@ const CategoriesPage = () => {
               Nepal's Cultural Heritage in Every Category
             </h2>
             <p className="text-lg text-gray-700 leading-relaxed mb-8">
-              Each category represents centuries of tradition, skill, and cultural significance. 
-              From musical instruments that have accompanied festivals for generations to handicrafts 
+              Each category represents centuries of tradition, skill, and cultural significance.
+              From musical instruments that have accompanied festivals for generations to handicrafts
               that tell stories of our ancestors, every product connects you to Nepal's rich heritage.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -383,7 +380,7 @@ const CategoryCard = ({ category, viewMode }) => {
               </div>
             )}
           </div>
-          
+
           <div className="flex-1">
             <div className="flex items-center space-x-3 mb-2">
               <h3 className="text-xl font-bold text-gray-900">{category.name}</h3>
@@ -395,9 +392,9 @@ const CategoryCard = ({ category, viewMode }) => {
                 <Badge variant="primary" size="sm">New</Badge>
               )}
             </div>
-            
+
             <p className="text-gray-600 mb-3">{category.description}</p>
-            
+
             <div className="flex items-center space-x-4 mb-3">
               <div className="flex items-center space-x-1">
                 <StarIcon className="h-4 w-4 text-yellow-400 fill-current" />
@@ -406,7 +403,7 @@ const CategoryCard = ({ category, viewMode }) => {
               <span className="text-sm text-gray-500">{category.productCount} products</span>
               <span className="text-sm text-gray-500">{category.priceRange}</span>
             </div>
-            
+
             <div className="flex flex-wrap gap-2">
               {category.subcategories.slice(0, 4).map((sub, index) => (
                 <Badge key={index} variant="outline" size="sm">
@@ -420,7 +417,7 @@ const CategoryCard = ({ category, viewMode }) => {
               )}
             </div>
           </div>
-          
+
           <div className="flex-shrink-0">
             <Link to={`/products/${category.id}`}>
               <Button variant="nepal" size="sm" className="flex items-center space-x-2">
@@ -451,10 +448,10 @@ const CategoryCard = ({ category, viewMode }) => {
               <span className="text-6xl opacity-50">{category.icon}</span>
             </div>
           )}
-          
+
           {/* Gradient Overlay */}
           <div className={`absolute inset-0 bg-gradient-to-t ${category.color} opacity-0 group-hover:opacity-80 transition-opacity duration-300`} />
-          
+
           {/* Badges */}
           <div className="absolute top-3 left-3 flex flex-col space-y-1">
             {category.isPopular && (
@@ -464,7 +461,7 @@ const CategoryCard = ({ category, viewMode }) => {
               <Badge variant="primary" size="sm">New</Badge>
             )}
           </div>
-          
+
           {/* Icon */}
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <span className="text-6xl transform group-hover:scale-110 transition-transform duration-300">
@@ -472,7 +469,7 @@ const CategoryCard = ({ category, viewMode }) => {
             </span>
           </div>
         </div>
-        
+
         {/* Content */}
         <div className="p-6">
           <div className="flex items-center justify-between mb-2">
@@ -484,15 +481,15 @@ const CategoryCard = ({ category, viewMode }) => {
               <span className="text-sm font-medium">{category.averageRating}</span>
             </div>
           </div>
-          
+
           <p className="text-sm text-gray-500 mb-3">{category.nepaliName}</p>
           <p className="text-gray-600 mb-4 line-clamp-2">{category.description}</p>
-          
+
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm text-gray-500">{category.productCount} products</span>
             <span className="text-sm font-medium text-gray-700">{category.priceRange}</span>
           </div>
-          
+
           {/* Subcategories */}
           <div className="flex flex-wrap gap-1 mb-4">
             {category.subcategories.slice(0, 3).map((sub, index) => (
@@ -506,7 +503,7 @@ const CategoryCard = ({ category, viewMode }) => {
               </Badge>
             )}
           </div>
-          
+
           {/* Features */}
           <div className="space-y-1 mb-4">
             {category.features.slice(0, 2).map((feature, index) => (
@@ -516,11 +513,11 @@ const CategoryCard = ({ category, viewMode }) => {
               </div>
             ))}
           </div>
-          
-          <Button 
-            variant="nepal" 
-            size="sm" 
-            fullWidth 
+
+          <Button
+            variant="nepal"
+            size="sm"
+            fullWidth
             className="group-hover:scale-105 transition-transform"
           >
             Explore Category

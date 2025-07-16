@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { DollarSign, Calendar, CreditCard, PieChart } from 'lucide-react';
-import Layout from '../../components/admin/Layout';
 
 const FinancialReportsPage = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('monthly');
@@ -53,7 +52,6 @@ const FinancialReportsPage = () => {
   );
 
   return (
-    <Layout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">Financial Reports</h1>
@@ -233,7 +231,6 @@ const FinancialReportsPage = () => {
           </div>
         </div>
       </div>
-    </Layout>
   );
 };
 

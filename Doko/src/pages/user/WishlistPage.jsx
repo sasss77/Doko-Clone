@@ -10,16 +10,16 @@ import {
   XMarkIcon
 } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
-import { WishlistContext } from '.././context/WishlistContext';
-import { CartContext } from '.././context/CartContext';
-import { AuthContext } from '.././context/AuthContext';
-import WishlistGrid from '../components/wishlist/WishlistGrid';
-import WishlistHeader from '../components/wishlist/WishListHeader';
-import EmptyWishlist from '../components/wishlist/EmptyWishlist';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
-import Modal from '../components/ui/Modal';
+import { WishlistContext } from '../.././context/WishlistContext';
+import { CartContext } from '../.././context/CartContext';
+import { AuthContext } from '../.././context/AuthContext';
+import WishlistGrid from '../../components/wishlist/WishlistGrid';
+import WishlistHeader from '../../components/wishlist/WishListHeader';
+import EmptyWishlist from '../../components/wishlist/EmptyWishlist';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Button from '../../components/ui/Button';
+import Badge from '../../components/ui/Badge';
+import Modal from '../../components/ui/Modal';
 
 const WishlistPage = () => {
   const navigate = useNavigate();

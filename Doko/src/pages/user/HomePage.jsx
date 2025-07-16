@@ -11,11 +11,11 @@ import {
   PlayIcon
 } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
-import ProductCard from '../components/product/ProductCard';
+import ProductCard from '../../components/product/ProductCard';
 
-import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
-import LoadingSpinner from '../components/common/LoadingSpinner';
+import Button from '../../components/ui/Button';
+import Badge from '../../components/ui/Badge';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 const HomePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);

@@ -19,13 +19,13 @@ import {
   CogIcon
 } from '@heroicons/react/24/outline';
 import { UserIcon as UserIconSolid } from '@heroicons/react/24/solid';
-import { AuthContext } from '.././context/AuthContext';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
-import Card from '../components/ui/Card';
-import Input from '../components/ui/Input';
-import Modal from '../components/ui/Modal';
+import { AuthContext } from '../.././context/AuthContext';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Button from '../../components/ui/Button';
+import Badge from '../../components/ui/Badge';
+import Card from '../../components/ui/Card';
+import Input from '../../components/ui/Input';
+import Modal from '../../components/ui/Modal';
 
 const ProfilePage = () => {
   const navigate = useNavigate();

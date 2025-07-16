@@ -23,7 +23,7 @@ const Header = () => {
   };
 
   const handleConfirmLogout = () => {
-    navigate('/homepage');
+    navigate('/login');
     setShowLogoutModal(false);
   };
 

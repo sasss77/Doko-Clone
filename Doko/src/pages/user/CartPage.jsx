@@ -13,16 +13,16 @@ import {
   TagIcon
 } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
-import { CartContext } from '.././context/CartContext';
-import { WishlistContext } from '.././context/WishlistContext';
-import { AuthContext } from '.././context/AuthContext';
-import ProductImages from '../components/product/ProductImages';
-import ProductReviews from '../components/product/ProductReviews';
-import ProductCard from '../components/product/ProductCard';
-import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import Modal from '../components/ui/Modal';
+import { CartContext } from '../.././context/CartContext';
+import { WishlistContext } from '../.././context/WishlistContext';
+import { AuthContext } from '../.././context/AuthContext';
+import ProductImages from '../../components/product/ProductImages';
+import ProductReviews from '../../components/product/ProductReviews';
+import ProductCard from '../../components/product/ProductCard';
+import Button from '../../components/ui/Button';
+import Badge from '../../components/ui/Badge';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Modal from '../../components/ui/Modal';
 
 const ProductDetailsPage = () => {
   const { id } = useParams();

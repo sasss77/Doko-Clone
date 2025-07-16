@@ -8,12 +8,12 @@ import {
   FunnelIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline';
-import ProductGrid from '../components/product/ProductGrid';
-import CategoryFilter from '../components/product/CategoryFilter';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
-import Dropdown from '../components/ui/Dropdown';
+import ProductGrid from '../../components/product/ProductGrid';
+import CategoryFilter from '../../components/product/CategoryFilter';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Button from '../../components/ui/Button';
+import Badge from '../../components/ui/Badge';
+import Dropdown from '../../components/ui/Dropdown';
 
 const ProductListingPage = () => {
   const { category } = useParams();

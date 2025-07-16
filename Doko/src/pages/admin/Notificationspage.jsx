@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Bell, Plus, Trash2, AlertCircle, MessageSquare, Mail, Settings } from 'lucide-react';
-import Layout from '../../components/admin/Layout';
 
 const NotificationsPage = () => {
   const [activeTab, setActiveTab] = useState('all');
@@ -213,82 +212,79 @@ const NotificationsPage = () => {
   };
 
   return (
-    <Layout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="flex items-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Create Notification</span>
-          </button>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="flex items-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Create Notification</span>
+        </button>
+      </div>
+
+      {/* Notification Tabs */}
+      <div className="bg-white rounded-lg shadow-sm">
+        <div className="border-b border-gray-200">
+          <nav className="flex space-x-8 px-6">
+            {['all', 'unread', 'system', 'orders'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab
+                    ? 'border-red-500 text-red-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            ))}
+          </nav>
         </div>
 
-        {/* Notification Tabs */}
-        <div className="bg-white rounded-lg shadow-sm">
-          <div className="border-b border-gray-200">
-            <nav className="flex space-x-8 px-6">
-              {['all', 'unread', 'system', 'orders'].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === tab
-                      ? 'border-red-500 text-red-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                </button>
-              ))}
-            </nav>
-          </div>
-
-          {/* Notification List */}
-          <div className="divide-y divide-gray-200">
-            {filteredNotifications.map((notification) => (
-              <div key={notification.id} className={`p-6 hover:bg-gray-50 ${notification.status === 'unread' ? 'bg-red-50' : ''}`}>
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-3">
-                    {getNotificationIcon(notification.type)}
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2">
-                        <h3 className="text-sm font-medium text-gray-900">{notification.title}</h3>
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${getPriorityColor(notification.priority)}`}>
-                          {notification.priority}
-                        </span>
-                        {notification.status === 'unread' && (
-                          <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-                        )}
-                      </div>
-                      <p className="mt-1 text-sm text-gray-600">{notification.message}</p>
-                      <div className="mt-2 flex items-center space-x-4 text-xs text-gray-500">
-                        <span>{notification.timestamp}</span>
-                        <span>Recipients: {notification.recipients}</span>
-                      </div>
+        {/* Notification List */}
+        <div className="divide-y divide-gray-200">
+          {filteredNotifications.map((notification) => (
+            <div key={notification.id} className={`p-6 hover:bg-gray-50 ${notification.status === 'unread' ? 'bg-red-50' : ''}`}>
+              <div className="flex items-start justify-between">
+                <div className="flex items-start space-x-3">
+                  {getNotificationIcon(notification.type)}
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2">
+                      <h3 className="text-sm font-medium text-gray-900">{notification.title}</h3>
+                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${getPriorityColor(notification.priority)}`}>
+                        {notification.priority}
+                      </span>
+                      {notification.status === 'unread' && (
+                        <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                      )}
+                    </div>
+                    <p className="mt-1 text-sm text-gray-600">{notification.message}</p>
+                    <div className="mt-2 flex items-center space-x-4 text-xs text-gray-500">
+                      <span>{notification.timestamp}</span>
+                      <span>Recipients: {notification.recipients}</span>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <button 
-                      onClick={() => handleDeleteNotification(notification.id)}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => handleDeleteNotification(notification.id)}
+                    className="text-red-600 hover:text-red-900"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-
-        {/* Create Notification Modal */}
-        <CreateNotificationModal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} />
       </div>
-    </Layout>
+
+      {/* Create Notification Modal */}
+      <CreateNotificationModal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} />
+    </div>
   );
 };
 

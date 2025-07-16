@@ -10,7 +10,6 @@ import {
   Camera,
   Key
 } from 'lucide-react';
-import Layout from '../../components/admin/Layout';
 
 const AdminProfile = () => {  
   const [isEditing, setIsEditing] = useState(false);
@@ -48,7 +47,6 @@ const AdminProfile = () => {
   };
 
   return (
-    <Layout>
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
@@ -189,7 +187,6 @@ const AdminProfile = () => {
           </div>
         </div>
       </div>
-    </Layout>
   );
 };
 

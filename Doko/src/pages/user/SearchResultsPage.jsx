@@ -9,13 +9,13 @@ import {
   ListBulletIcon,
   ArrowPathIcon
 } from '@heroicons/react/24/outline';
-import ProductGrid from '../components/product/ProductGrid';
-import CategoryFilter from '../components/product/CategoryFilter';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import SearchBar from '../components/common/SearchBar';
-import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
-import Card from '../components/ui/Card';
+import ProductGrid from '../../components/product/ProductGrid';
+import CategoryFilter from '../../components/product/CategoryFilter';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import SearchBar from '../../components/common/SearchBar';
+import Button from '../../components/ui/Button';
+import Badge from '../../components/ui/Badge';
+import Card from '../../components/ui/Card';
 
 const SearchResultsPage = () => {
   const location = useLocation();

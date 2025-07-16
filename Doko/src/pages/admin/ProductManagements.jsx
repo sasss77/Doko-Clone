@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Package, Plus, Search, Edit, Trash2, Star, AlertCircle, TrendingUp } from 'lucide-react';
-import Layout from '../../components/admin/Layout';
 import StatusBadge from '../../components/admin/StatusBadge';
 
 const ProductManagementPage = () => {
@@ -127,7 +126,6 @@ const ProductManagementPage = () => {
   };
 
   return (
-    <Layout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">Product Management</h1>
@@ -318,7 +316,6 @@ const ProductManagementPage = () => {
           />
         )}
       </div>
-    </Layout>
   );
 };
 

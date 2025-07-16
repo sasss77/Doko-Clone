@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Search, Eye, Edit, Trash2 } from 'lucide-react';
-import Layout from '../../components/admin/Layout';
 import StatusBadge from '../../components/admin/StatusBadge';
 
 const OrderManagementPage = () => {
@@ -61,7 +60,6 @@ const OrderManagementPage = () => {
   };
 
   return (
-    <Layout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">Order Management</h1>
@@ -226,7 +224,6 @@ const OrderManagementPage = () => {
           />
         )}
       </div>
-    </Layout>
   );
 };
 

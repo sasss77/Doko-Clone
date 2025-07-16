@@ -11,11 +11,11 @@ import {
   GlobeAltIcon,
   QuestionMarkCircleIcon
 } from '@heroicons/react/24/outline';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
-import Card from '../components/ui/Card';
-import Input from '../components/ui/Input';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Button from '../../components/ui/Button';
+import Badge from '../../components/ui/Badge';
+import Card from '../../components/ui/Card';
+import Input from '../../components/ui/Input';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({

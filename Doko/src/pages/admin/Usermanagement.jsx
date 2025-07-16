@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Search, Plus, Eye, Edit, Trash2 } from 'lucide-react';
-import Layout from '../../components/admin/Layout';
 import StatusBadge from '../../components/admin/StatusBadge';
 
 const UserManagementPage = () => {
@@ -52,7 +51,6 @@ const UserManagementPage = () => {
   };
 
   return (
-    <Layout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
@@ -207,7 +205,6 @@ const UserManagementPage = () => {
           />
         )}
       </div>
-    </Layout>
   );
 };
 
