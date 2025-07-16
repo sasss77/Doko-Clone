@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, User, Shield } from 'lucide-react';
-import doko from "../assets/doko";
+import doko from "../assets/doko.png";
 
 const Login = () => {
   const [formData, setFormData] = useState({

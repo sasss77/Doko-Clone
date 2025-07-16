@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Plus, Search, Filter, Grid, List, Star, Edit, Trash2, Eye, X, Tag, Calendar, Percent } from 'lucide-react';
-import ProductCard from '../common/ProductCard';
-import ProductForm from '../common/ProductForm';
-import { mockData } from '../../utils/constants';
+import ProductCard from '../common/ProductCard'; // Assuming these are correctly imported
+import ProductForm from '../common/ProductForm'; // Assuming these are correctly imported
+import { mockData } from '../../utils/constants'; // Assuming this is correctly imported
 
 const Products = () => {
   const [showForm, setShowForm] = useState(false);
@@ -29,12 +29,23 @@ const Products = () => {
     return matchesSearch && matchesCategory;
   });
 
+  // Close all modals
+  const closeAllModals = () => {
+    setShowForm(false);
+    setShowViewModal(false);
+    setShowDiscountModal(false);
+    setEditingProduct(null);
+    setSelectedProduct(null);
+  };
+
   const handleAddProduct = () => {
+    closeAllModals();
     setEditingProduct(null);
     setShowForm(true);
   };
 
   const handleEditProduct = (product) => {
+    closeAllModals();
     setEditingProduct(product);
     setShowForm(true);
   };
@@ -46,11 +57,13 @@ const Products = () => {
   };
 
   const handleViewProduct = (product) => {
+    closeAllModals();
     setSelectedProduct(product);
     setShowViewModal(true);
   };
 
   const handleAddDiscount = (product) => {
+    closeAllModals();
     setSelectedProduct(product);
     setShowDiscountModal(true);
     setDiscountData({
@@ -65,7 +78,7 @@ const Products = () => {
 
   const handleSaveProduct = (productData) => {
     if (editingProduct) {
-      setProducts(products.map(p => 
+      setProducts(products.map(p =>
         p.id === editingProduct.id ? { ...p, ...productData } : p
       ));
     } else {
@@ -78,8 +91,7 @@ const Products = () => {
       };
       setProducts([...products, newProduct]);
     }
-    setShowForm(false);
-    setEditingProduct(null);
+    closeAllModals();
   };
 
   const handleSaveDiscount = () => {
@@ -103,8 +115,7 @@ const Products = () => {
     });
 
     setProducts(updatedProducts);
-    setShowDiscountModal(false);
-    setSelectedProduct(null);
+    closeAllModals();
   };
 
   const handleRemoveDiscount = (productId) => {
@@ -123,7 +134,7 @@ const Products = () => {
 
   const calculateDiscountedPrice = (price, discount) => {
     if (!discount) return price;
-    
+
     if (discount.type === 'percentage') {
       return price - (price * (discount.value / 100));
     } else {
@@ -133,11 +144,11 @@ const Products = () => {
 
   const isDiscountActive = (discount) => {
     if (!discount) return false;
-    
+
     const now = new Date();
     const startDate = new Date(discount.startDate);
     const endDate = new Date(discount.endDate);
-    
+
     return now >= startDate && now <= endDate && discount.active;
   };
 
@@ -149,11 +160,18 @@ const Products = () => {
     const discountedPrice = calculateDiscountedPrice(selectedProduct.price, selectedProduct.discount);
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+        {/* Overlay */}
+        <div
+          className="fixed inset-0 bg-opacity-50"
+          onClick={() => setShowViewModal(false)}
+        ></div>
+
+        {/* Modal Content */}
+        <div className="relative bg-white rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-800">Product Details</h2>
-            <button 
+            <button
               onClick={() => setShowViewModal(false)}
               className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
             >
@@ -190,8 +208,8 @@ const Products = () => {
                       </span>
                       <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm font-medium flex items-center">
                         <Percent size={14} className="mr-1" />
-                        {selectedProduct.discount.type === 'percentage' 
-                          ? `${selectedProduct.discount.value}% OFF` 
+                        {selectedProduct.discount.type === 'percentage'
+                          ? `${selectedProduct.discount.value}% OFF`
                           : `Rs${selectedProduct.discount.value} OFF`}
                       </span>
                     </>
@@ -221,9 +239,9 @@ const Products = () => {
                   <span className="text-gray-600">Stock:</span>
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                     selectedProduct.stock > 20 ? 'bg-green-100 text-green-800' :
-                    selectedProduct.stock > 5 ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-red-100 text-red-800'
-                  }`}>
+                      selectedProduct.stock > 5 ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                    }`}>
                     {selectedProduct.stock} units
                   </span>
                 </div>
@@ -285,13 +303,20 @@ const Products = () => {
   // Discount Modal Component
   const DiscountModal = () => {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-2xl p-6 w-full max-w-2xl">
+      <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+        {/* Overlay */}
+        <div
+          className="fixed inset-0 bg-opacity-50"
+          onClick={() => setShowDiscountModal(false)}
+        ></div>
+
+        {/* Modal Content */}
+        <div className="relative bg-white rounded-2xl p-6 w-full max-w-2xl shadow-2xl">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-800">
               {selectedProduct?.discount ? 'Update Discount' : 'Add Discount'}
             </h2>
-            <button 
+            <button
               onClick={() => setShowDiscountModal(false)}
               className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
             >
@@ -310,7 +335,7 @@ const Products = () => {
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Discount Type</label>
                 <select
                   value={discountData.type}
-                  onChange={(e) => setDiscountData({...discountData, type: e.target.value})}
+                  onChange={(e) => setDiscountData({ ...discountData, type: e.target.value })}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 >
                   <option value="percentage">Percentage (%)</option>
@@ -325,7 +350,7 @@ const Products = () => {
                 <input
                   type="number"
                   value={discountData.value}
-                  onChange={(e) => setDiscountData({...discountData, value: e.target.value})}
+                  onChange={(e) => setDiscountData({ ...discountData, value: e.target.value })}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
                   placeholder={discountData.type === 'percentage' ? '20' : '500'}
                 />
@@ -338,7 +363,7 @@ const Products = () => {
                 <input
                   type="date"
                   value={discountData.startDate}
-                  onChange={(e) => setDiscountData({...discountData, startDate: e.target.value})}
+                  onChange={(e) => setDiscountData({ ...discountData, startDate: e.target.value })}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 />
               </div>
@@ -348,7 +373,7 @@ const Products = () => {
                 <input
                   type="date"
                   value={discountData.endDate}
-                  onChange={(e) => setDiscountData({...discountData, endDate: e.target.value})}
+                  onChange={(e) => setDiscountData({ ...discountData, endDate: e.target.value })}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 />
               </div>
@@ -359,7 +384,7 @@ const Products = () => {
               <input
                 type="number"
                 value={discountData.minQuantity}
-                onChange={(e) => setDiscountData({...discountData, minQuantity: e.target.value})}
+                onChange={(e) => setDiscountData({ ...discountData, minQuantity: e.target.value })}
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 placeholder="1"
                 min="1"
@@ -370,7 +395,7 @@ const Products = () => {
               <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
               <textarea
                 value={discountData.description}
-                onChange={(e) => setDiscountData({...discountData, description: e.target.value})}
+                onChange={(e) => setDiscountData({ ...discountData, description: e.target.value })}
                 rows="3"
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 placeholder="Limited time offer for loyal customers..."
@@ -418,7 +443,7 @@ const Products = () => {
             <h2 className="text-2xl font-bold text-gray-800">Products</h2>
             <p className="text-gray-600 mt-1">Manage your product inventory</p>
           </div>
-          <button 
+          <button
             onClick={handleAddProduct}
             className="flex items-center space-x-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-200"
           >
@@ -459,7 +484,7 @@ const Products = () => {
               onClick={() => setViewMode('grid')}
               className={`p-2 rounded-lg transition-colors ${
                 viewMode === 'grid' ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
+                }`}
             >
               <Grid size={20} />
             </button>
@@ -467,7 +492,7 @@ const Products = () => {
               onClick={() => setViewMode('list')}
               className={`p-2 rounded-lg transition-colors ${
                 viewMode === 'list' ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
+                }`}
             >
               <List size={20} />
             </button>
@@ -482,25 +507,25 @@ const Products = () => {
             {filteredProducts.map((product) => {
               const hasActiveDiscount = isDiscountActive(product.discount);
               const discountedPrice = calculateDiscountedPrice(product.price, product.discount);
-              
+
               return (
                 <div key={product.id} className="bg-gray-50 rounded-xl p-4 hover:shadow-md transition-all duration-200 group relative">
                   {hasActiveDiscount && (
                     <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium z-10">
-                      {product.discount.type === 'percentage' 
-                        ? `${product.discount.value}% OFF` 
+                      {product.discount.type === 'percentage'
+                        ? `${product.discount.value}% OFF`
                         : `Rs${product.discount.value} OFF`}
                     </div>
                   )}
-                  
+
                   <div className="w-full h-48 bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl mb-4 flex items-center justify-center">
                     <div className="text-gray-500 text-6xl">📦</div>
                   </div>
-                  
+
                   <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-red-600 transition-colors">
                     {product.name}
                   </h3>
-                  
+
                   <div className="mb-2">
                     {hasActiveDiscount ? (
                       <div className="flex items-center space-x-2">
@@ -517,13 +542,13 @@ const Products = () => {
                       </p>
                     )}
                   </div>
-                  
+
                   <div className="flex items-center justify-between mb-4">
                     <span className={`text-sm px-2 py-1 rounded-full ${
                       product.stock > 20 ? 'bg-green-200 text-green-800' :
-                      product.stock > 5 ? 'bg-yellow-200 text-yellow-800' :
-                      'bg-red-200 text-red-800'
-                    }`}>
+                        product.stock > 5 ? 'bg-yellow-200 text-yellow-800' :
+                          'bg-red-200 text-red-800'
+                      }`}>
                       {product.stock} in stock
                     </span>
                     <div className="flex items-center space-x-1">
@@ -531,23 +556,23 @@ const Products = () => {
                       <span className="text-sm text-gray-600">{product.rating}</span>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
-                    <button 
+                    <button
                       onClick={() => handleViewProduct(product)}
                       className="flex-1 flex items-center justify-center space-x-1 text-blue-600 hover:bg-blue-50 py-2 px-3 rounded-lg transition-colors"
                     >
                       <Eye size={16} />
                       <span className="text-sm">View</span>
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleEditProduct(product)}
                       className="flex-1 flex items-center justify-center space-x-1 text-green-600 hover:bg-green-50 py-2 px-3 rounded-lg transition-colors"
                     >
                       <Edit size={16} />
                       <span className="text-sm">Edit</span>
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleDeleteProduct(product.id)}
                       className="flex-1 flex items-center justify-center space-x-1 text-red-600 hover:bg-red-50 py-2 px-3 rounded-lg transition-colors"
                     >
@@ -564,7 +589,7 @@ const Products = () => {
             {filteredProducts.map((product) => {
               const hasActiveDiscount = isDiscountActive(product.discount);
               const discountedPrice = calculateDiscountedPrice(product.price, product.discount);
-              
+
               return (
                 <div key={product.id} className="flex items-center space-x-4 p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition-all duration-200">
                   <div className="w-16 h-16 bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl flex items-center justify-center relative">
@@ -575,12 +600,12 @@ const Products = () => {
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900">{product.name}</h3>
                     <p className="text-gray-600 text-sm capitalize">{product.category}</p>
                   </div>
-                  
+
                   <div className="text-right">
                     {hasActiveDiscount ? (
                       <div>
@@ -592,21 +617,21 @@ const Products = () => {
                     )}
                     <p className="text-sm text-gray-600">{product.stock} in stock</p>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
-                    <button 
+                    <button
                       onClick={() => handleViewProduct(product)}
                       className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                     >
                       <Eye size={16} />
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleEditProduct(product)}
                       className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                     >
                       <Edit size={16} />
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleDeleteProduct(product.id)}
                       className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                     >
@@ -625,14 +650,14 @@ const Products = () => {
         <ProductForm
           product={editingProduct}
           onSave={handleSaveProduct}
-          onClose={() => {
-            setShowForm(false);
-            setEditingProduct(null);
-          }}
+          onClose={closeAllModals}
         />
       )}
-      
+
+      {/* Product View Modal */}
       {showViewModal && <ProductViewModal />}
+
+      {/* Discount Modal */}
       {showDiscountModal && <DiscountModal />}
     </div>
   );

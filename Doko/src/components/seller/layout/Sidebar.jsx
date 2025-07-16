@@ -47,9 +47,6 @@ const Sidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) => {
                 <img src={doko} alt="DOKO Logo" className="w-full h-full object-contain" />
               </div>
             </div>
-            <div className="text-center">
-              <span className="text-xl font-bold text-gray-800">DOKO</span>
-            </div>
           </div>
           
           {/* Navigation */}

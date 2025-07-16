@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, User, Phone, MapPin, Store, FileText, Upload, AlertCircle, Building, CreditCard, Globe } from 'lucide-react';
+import doko from "../assets/doko.png"
 
 const SellerRegister = () => {
   const [formData, setFormData] = useState({
@@ -18,15 +19,6 @@ const SellerRegister = () => {
     businessAddress: '',
     businessPhone: '',
     businessEmail: '',
-    taxId: '',
-    businessLicense: '',
-    panNumber: '',
-    
-    // Bank Information
-    bankName: '',
-    accountHolderName: '',
-    accountNumber: '',
-    routingNumber: '',
     
     // Security
     password: '',
@@ -59,6 +51,15 @@ const SellerRegister = () => {
     'Individual/Freelancer'
   ];
 
+  const documentTypes = [
+    'Business License',
+    'Tax Certificate',
+    'Identity Proof',
+    'Address Proof',
+    'Bank Statement',
+    'Other'
+  ];
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -74,9 +75,33 @@ const SellerRegister = () => {
 
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    const allowedTypes = ['.pdf', '.jpg', '.jpeg', '.png', '.doc', '.docx'];
+    
+    const validFiles = files.filter(file => {
+      const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+      return file.size <= maxSize && allowedTypes.includes(fileExtension);
+    });
+    
+    if (validFiles.length !== files.length) {
+      alert('Some files were rejected. Please ensure files are under 5MB and in supported formats.');
+    }
+    
+    // Check if total documents exceed limit
+    if (formData.documents.length + validFiles.length > 10) {
+      alert('Maximum 10 documents allowed. Please remove some files first.');
+      return;
+    }
+    
+    // Add category property to each file
+    const filesWithCategory = validFiles.map(file => ({
+      ...file,
+      category: ''
+    }));
+    
     setFormData({
       ...formData,
-      documents: [...formData.documents, ...files]
+      documents: [...formData.documents, ...filesWithCategory]
     });
   };
 
@@ -88,39 +113,186 @@ const SellerRegister = () => {
     });
   };
 
+  const handleDocumentCategoryChange = (index, category) => {
+    const updatedDocuments = [...formData.documents];
+    updatedDocuments[index] = { ...updatedDocuments[index], category };
+    
+    setFormData({
+      ...formData,
+      documents: updatedDocuments
+    });
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    const phoneRegex = /^[0-9]{10,15}$/;
+    return phoneRegex.test(phone.replace(/\D/g, ''));
+  };
+
+  const validatePassword = (password) => {
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+    return {
+      minLength: password.length >= minLength,
+      hasUpperCase,
+      hasLowerCase,
+      hasNumbers,
+      hasSpecial
+    };
+  };
+
+  const validateURL = (url) => {
+    if (!url) return true; // Optional field
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   const validateForm = () => {
     const newErrors = {};
     
-    // Personal Information
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
-    if (!formData.personalAddress.trim()) newErrors.personalAddress = 'Personal address is required';
-    
-    // Business Information
-    if (!formData.storeName.trim()) newErrors.storeName = 'Store name is required';
-    if (!formData.businessType) newErrors.businessType = 'Business type is required';
-    if (!formData.businessAddress.trim()) newErrors.businessAddress = 'Business address is required';
-    if (!formData.businessPhone.trim()) newErrors.businessPhone = 'Business phone is required';
-    if (!formData.businessEmail.trim()) newErrors.businessEmail = 'Business email is required';
-    
-    // Bank Information
-    if (!formData.bankName.trim()) newErrors.bankName = 'Bank name is required';
-    if (!formData.accountHolderName.trim()) newErrors.accountHolderName = 'Account holder name is required';
-    if (!formData.accountNumber.trim()) newErrors.accountNumber = 'Account number is required';
-    
-    // Security
-    if (!formData.password) newErrors.password = 'Password is required';
-    if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters';
-    if (formData.password !== formData.confirmPassword) {
+    // Personal Information Validation
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required';
+    } else if (formData.firstName.trim().length < 2) {
+      newErrors.firstName = 'First name must be at least 2 characters';
+    } else if (!/^[a-zA-Z\s]+$/.test(formData.firstName)) {
+      newErrors.firstName = 'First name can only contain letters and spaces';
+    }
+
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = 'Last name is required';
+    } else if (formData.lastName.trim().length < 2) {
+      newErrors.lastName = 'Last name must be at least 2 characters';
+    } else if (!/^[a-zA-Z\s]+$/.test(formData.lastName)) {
+      newErrors.lastName = 'Last name can only contain letters and spaces';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Personal email is required';
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Personal phone number is required';
+    } else if (!validatePhone(formData.phone)) {
+      newErrors.phone = 'Please enter a valid phone number (10-15 digits)';
+    }
+
+    if (!formData.personalAddress.trim()) {
+      newErrors.personalAddress = 'Personal address is required';
+    } else if (formData.personalAddress.trim().length < 10) {
+      newErrors.personalAddress = 'Please provide a complete address';
+    }
+
+    // Business Information Validation
+    if (!formData.storeName.trim()) {
+      newErrors.storeName = 'Store name is required';
+    } else if (formData.storeName.trim().length < 2) {
+      newErrors.storeName = 'Store name must be at least 2 characters';
+    } else if (formData.storeName.trim().length > 100) {
+      newErrors.storeName = 'Store name must be less than 100 characters';
+    }
+
+    if (!formData.businessType) {
+      newErrors.businessType = 'Business type is required';
+    }
+
+    if (!formData.businessAddress.trim()) {
+      newErrors.businessAddress = 'Business address is required';
+    } else if (formData.businessAddress.trim().length < 10) {
+      newErrors.businessAddress = 'Please provide a complete business address';
+    }
+
+    if (!formData.businessPhone.trim()) {
+      newErrors.businessPhone = 'Business phone number is required';
+    } else if (!validatePhone(formData.businessPhone)) {
+      newErrors.businessPhone = 'Please enter a valid business phone number (10-15 digits)';
+    }
+
+    if (!formData.businessEmail.trim()) {
+      newErrors.businessEmail = 'Business email is required';
+    } else if (!validateEmail(formData.businessEmail)) {
+      newErrors.businessEmail = 'Please enter a valid business email address';
+    }
+
+    // REMOVED: Business email different from personal email validation
+    // REMOVED: Business phone different from personal phone validation
+
+    // Online Presence Validation
+    if (formData.website && !validateURL(formData.website)) {
+      newErrors.website = 'Please enter a valid website URL';
+    }
+
+    if (formData.facebook && !validateURL(formData.facebook)) {
+      newErrors.facebook = 'Please enter a valid Facebook URL';
+    }
+
+    if (formData.instagram && !validateURL(formData.instagram)) {
+      newErrors.instagram = 'Please enter a valid Instagram URL';
+    }
+
+    // Security Validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else {
+      const passwordValidation = validatePassword(formData.password);
+      if (!passwordValidation.minLength) {
+        newErrors.password = 'Password must be at least 8 characters long';
+      } else if (!passwordValidation.hasUpperCase) {
+        newErrors.password = 'Password must contain at least one uppercase letter';
+      } else if (!passwordValidation.hasLowerCase) {
+        newErrors.password = 'Password must contain at least one lowercase letter';
+      } else if (!passwordValidation.hasNumbers) {
+        newErrors.password = 'Password must contain at least one number';
+      } else if (!passwordValidation.hasSpecial) {
+        newErrors.password = 'Password must contain at least one special character';
+      }
+    }
+
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+    } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
-    
-    // Agreements
-    if (!formData.agreeToTerms) newErrors.agreeToTerms = 'You must agree to terms and conditions';
-    if (!formData.agreeToSellerTerms) newErrors.agreeToSellerTerms = 'You must agree to seller terms';
-    
+
+    // Store description validation
+    if (formData.storeDescription && formData.storeDescription.trim().length > 500) {
+      newErrors.storeDescription = 'Store description must be less than 500 characters';
+    }
+
+    // Document validation - MANDATORY (Minimum 1 document)
+    if (formData.documents.length === 0) {
+      newErrors.documents = 'At least one business document is required for verification';
+    } else {
+      // Check if all documents have categories assigned
+      const unCategorizedDocs = formData.documents.filter(doc => !doc.category);
+      if (unCategorizedDocs.length > 0) {
+        newErrors.documents = 'Please assign categories to all uploaded documents';
+      }
+    }
+
+    // Agreements Validation
+    if (!formData.agreeToTerms) {
+      newErrors.agreeToTerms = 'You must agree to the Terms and Conditions';
+    }
+
+    if (!formData.agreeToSellerTerms) {
+      newErrors.agreeToSellerTerms = 'You must agree to the Seller Agreement';
+    }
+
     return newErrors;
   };
 
@@ -132,14 +304,28 @@ const SellerRegister = () => {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       setLoading(false);
+      
+      // Scroll to first error
+      const firstErrorElement = document.querySelector('.border-red-500');
+      if (firstErrorElement) {
+        firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      
+      // Show specific message for document errors
+      if (validationErrors.documents) {
+        alert('Please upload at least one business document before submitting the form.');
+      }
+      
       return;
     }
     
     // Handle seller registration logic here
     console.log('Seller registration data:', formData);
     
+    // Simulate API call
     setTimeout(() => {
       setLoading(false);
+      alert('Seller registration successful! Your documents are being reviewed.');
     }, 3000);
   };
 
@@ -148,10 +334,6 @@ const SellerRegister = () => {
       <div className="max-w-4xl w-full space-y-8">
         <div className="text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-xl">D</span>
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900">DOKO</h1>
           </div>
           <h2 className="text-2xl font-bold text-gray-900">Start selling on DOKO</h2>
           <p className="mt-2 text-gray-600">
@@ -187,14 +369,15 @@ const SellerRegister = () => {
                       errors.firstName ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="Enter your first name"
+                    maxLength={50}
                   />
-                  {errors.firstName && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={16} className="mr-1" />
-                      {errors.firstName}
-                    </div>
-                  )}
                 </div>
+                {errors.firstName && (
+                  <div className="mt-1 flex items-center text-red-500 text-sm">
+                    <AlertCircle size={16} className="mr-1" />
+                    {errors.firstName}
+                  </div>
+                )}
               </div>
 
               <div>
@@ -213,14 +396,15 @@ const SellerRegister = () => {
                       errors.lastName ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="Enter your last name"
+                    maxLength={50}
                   />
-                  {errors.lastName && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={16} className="mr-1" />
-                      {errors.lastName}
-                    </div>
-                  )}
                 </div>
+                {errors.lastName && (
+                  <div className="mt-1 flex items-center text-red-500 text-sm">
+                    <AlertCircle size={16} className="mr-1" />
+                    {errors.lastName}
+                  </div>
+                )}
               </div>
 
               <div>
@@ -239,14 +423,15 @@ const SellerRegister = () => {
                       errors.email ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="Enter your personal email"
+                    maxLength={100}
                   />
-                  {errors.email && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={16} className="mr-1" />
-                      {errors.email}
-                    </div>
-                  )}
                 </div>
+                {errors.email && (
+                  <div className="mt-1 flex items-center text-red-500 text-sm">
+                    <AlertCircle size={16} className="mr-1" />
+                    {errors.email}
+                  </div>
+                )}
               </div>
 
               <div>
@@ -265,14 +450,15 @@ const SellerRegister = () => {
                       errors.phone ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="Enter your phone number"
+                    maxLength={15}
                   />
-                  {errors.phone && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={16} className="mr-1" />
-                      {errors.phone}
-                    </div>
-                  )}
                 </div>
+                {errors.phone && (
+                  <div className="mt-1 flex items-center text-red-500 text-sm">
+                    <AlertCircle size={16} className="mr-1" />
+                    {errors.phone}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -291,15 +477,16 @@ const SellerRegister = () => {
                   className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent ${
                     errors.personalAddress ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="Enter your personal address"
+                  placeholder="Enter your complete personal address"
+                  maxLength={200}
                 />
-                {errors.personalAddress && (
-                  <div className="mt-1 flex items-center text-red-500 text-sm">
-                    <AlertCircle size={16} className="mr-1" />
-                    {errors.personalAddress}
-                  </div>
-                )}
               </div>
+              {errors.personalAddress && (
+                <div className="mt-1 flex items-center text-red-500 text-sm">
+                  <AlertCircle size={16} className="mr-1" />
+                  {errors.personalAddress}
+                </div>
+              )}
             </div>
           </div>
 
@@ -325,14 +512,15 @@ const SellerRegister = () => {
                         errors.storeName ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder="Enter your store name"
+                      maxLength={100}
                     />
-                    {errors.storeName && (
-                      <div className="mt-1 flex items-center text-red-500 text-sm">
-                        <AlertCircle size={16} className="mr-1" />
-                        {errors.storeName}
-                      </div>
-                    )}
                   </div>
+                  {errors.storeName && (
+                    <div className="mt-1 flex items-center text-red-500 text-sm">
+                      <AlertCircle size={16} className="mr-1" />
+                      {errors.storeName}
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -376,10 +564,22 @@ const SellerRegister = () => {
                     value={formData.storeDescription}
                     onChange={handleChange}
                     rows="4"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                    className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent ${
+                      errors.storeDescription ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     placeholder="Describe your store and what you sell..."
+                    maxLength={500}
                   />
                 </div>
+                <div className="mt-1 text-sm text-gray-500 text-right">
+                  {formData.storeDescription.length}/500
+                </div>
+                {errors.storeDescription && (
+                  <div className="mt-1 flex items-center text-red-500 text-sm">
+                    <AlertCircle size={16} className="mr-1" />
+                    {errors.storeDescription}
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -399,14 +599,15 @@ const SellerRegister = () => {
                         errors.businessEmail ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder="Enter business email"
+                      maxLength={100}
                     />
-                    {errors.businessEmail && (
-                      <div className="mt-1 flex items-center text-red-500 text-sm">
-                        <AlertCircle size={16} className="mr-1" />
-                        {errors.businessEmail}
-                      </div>
-                    )}
                   </div>
+                  {errors.businessEmail && (
+                    <div className="mt-1 flex items-center text-red-500 text-sm">
+                      <AlertCircle size={16} className="mr-1" />
+                      {errors.businessEmail}
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -425,14 +626,15 @@ const SellerRegister = () => {
                         errors.businessPhone ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder="Enter business phone"
+                      maxLength={15}
                     />
-                    {errors.businessPhone && (
-                      <div className="mt-1 flex items-center text-red-500 text-sm">
-                        <AlertCircle size={16} className="mr-1" />
-                        {errors.businessPhone}
-                      </div>
-                    )}
                   </div>
+                  {errors.businessPhone && (
+                    <div className="mt-1 flex items-center text-red-500 text-sm">
+                      <AlertCircle size={16} className="mr-1" />
+                      {errors.businessPhone}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -451,162 +653,16 @@ const SellerRegister = () => {
                     className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent ${
                       errors.businessAddress ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    placeholder="Enter your business address"
-                  />
-                  {errors.businessAddress && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={16} className="mr-1" />
-                      {errors.businessAddress}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                  <label htmlFor="taxId" className="block text-sm font-medium text-gray-700 mb-2">
-                    Tax ID
-                  </label>
-                  <input
-                    id="taxId"
-                    name="taxId"
-                    type="text"
-                    value={formData.taxId}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="Enter tax ID"
+                    placeholder="Enter your complete business address"
+                    maxLength={200}
                   />
                 </div>
-
-                <div>
-                  <label htmlFor="businessLicense" className="block text-sm font-medium text-gray-700 mb-2">
-                    Business License
-                  </label>
-                  <input
-                    id="businessLicense"
-                    name="businessLicense"
-                    type="text"
-                    value={formData.businessLicense}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="Enter license number"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="panNumber" className="block text-sm font-medium text-gray-700 mb-2">
-                    PAN Number
-                  </label>
-                  <input
-                    id="panNumber"
-                    name="panNumber"
-                    type="text"
-                    value={formData.panNumber}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="Enter PAN number"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Bank Information */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Bank Information</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="bankName" className="block text-sm font-medium text-gray-700 mb-2">
-                  Bank Name *
-                </label>
-                <div className="relative">
-                  <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-                  <input
-                    id="bankName"
-                    name="bankName"
-                    type="text"
-                    value={formData.bankName}
-                    onChange={handleChange}
-                    className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent ${
-                      errors.bankName ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="Enter bank name"
-                  />
-                  {errors.bankName && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={16} className="mr-1" />
-                      {errors.bankName}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="accountHolderName" className="block text-sm font-medium text-gray-700 mb-2">
-                  Account Holder Name *
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-                  <input
-                    id="accountHolderName"
-                    name="accountHolderName"
-                    type="text"
-                    value={formData.accountHolderName}
-                    onChange={handleChange}
-                    className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent ${
-                      errors.accountHolderName ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="Enter account holder name"
-                  />
-                  {errors.accountHolderName && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={16} className="mr-1" />
-                      {errors.accountHolderName}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="accountNumber" className="block text-sm font-medium text-gray-700 mb-2">
-                  Account Number *
-                </label>
-                <div className="relative">
-                  <CreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-                  <input
-                    id="accountNumber"
-                    name="accountNumber"
-                    type="text"
-                    value={formData.accountNumber}
-                    onChange={handleChange}
-                    className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent ${
-                      errors.accountNumber ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="Enter account number"
-                  />
-                  {errors.accountNumber && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={16} className="mr-1" />
-                      {errors.accountNumber}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="routingNumber" className="block text-sm font-medium text-gray-700 mb-2">
-                  Routing Number
-                </label>
-                <input
-                  id="routingNumber"
-                  name="routingNumber"
-                  type="text"
-                  value={formData.routingNumber}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  placeholder="Enter routing number"
-                />
+                {errors.businessAddress && (
+                  <div className="mt-1 flex items-center text-red-500 text-sm">
+                    <AlertCircle size={16} className="mr-1" />
+                    {errors.businessAddress}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -628,10 +684,19 @@ const SellerRegister = () => {
                     type="url"
                     value={formData.website}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                    className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent ${
+                      errors.website ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     placeholder="https://yourwebsite.com"
+                    maxLength={200}
                   />
                 </div>
+                {errors.website && (
+                  <div className="mt-1 flex items-center text-red-500 text-sm">
+                    <AlertCircle size={16} className="mr-1" />
+                    {errors.website}
+                  </div>
+                )}
               </div>
 
               <div>
@@ -644,9 +709,18 @@ const SellerRegister = () => {
                   type="url"
                   value={formData.facebook}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent ${
+                    errors.facebook ? 'border-red-500' : 'border-gray-300'
+                  }`}
                   placeholder="https://facebook.com/yourpage"
+                  maxLength={200}
                 />
+                {errors.facebook && (
+                  <div className="mt-1 flex items-center text-red-500 text-sm">
+                    <AlertCircle size={16} className="mr-1" />
+                    {errors.facebook}
+                  </div>
+                )}
               </div>
 
               <div>
@@ -659,22 +733,47 @@ const SellerRegister = () => {
                   type="url"
                   value={formData.instagram}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent ${
+                    errors.instagram ? 'border-red-500' : 'border-gray-300'
+                  }`}
                   placeholder="https://instagram.com/yourhandle"
+                  maxLength={200}
                 />
+                {errors.instagram && (
+                  <div className="mt-1 flex items-center text-red-500 text-sm">
+                    <AlertCircle size={16} className="mr-1" />
+                    {errors.instagram}
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Document Upload */}
+          {/* Document Upload - MANDATORY (Minimum 1 document) */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Business Documents</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Business Documents *
+            </h3>
+            
+            <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <h4 className="font-medium text-blue-800 mb-2">Document Requirements (At least 1 required):</h4>
+              <ul className="text-blue-700 text-sm space-y-1">
+                <li>• <strong>Business License</strong> - Business registration certificate</li>
+                <li>• <strong>Tax Certificate</strong> - Tax registration documents</li>
+                <li>• <strong>Identity Proof</strong> - Passport/National ID/Driver's License</li>
+                <li>• <strong>Address Proof</strong> - Utility bill/Bank statement</li>
+                <li>• <strong>Bank Statement</strong> - Recent bank statement</li>
+                <li>• <strong>Other</strong> - Any other relevant business documents</li>
+              </ul>
+            </div>
             
             <div className="space-y-4">
-              <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
+              <div className={`border-2 border-dashed rounded-xl p-8 text-center ${
+                errors.documents ? 'border-red-300 bg-red-50' : 'border-gray-300'
+              }`}>
                 <Upload className="mx-auto mb-4 text-gray-400" size={48} />
                 <p className="text-gray-600 mb-4">
-                  Upload business license, tax certificates, identity documents, or other relevant files
+                  Upload business documents for verification
                 </p>
                 <input
                   type="file"
@@ -692,26 +791,51 @@ const SellerRegister = () => {
                   Choose Files
                 </label>
                 <p className="text-sm text-gray-500 mt-2">
-                  Accepted formats: PDF, JPG, PNG, DOC, DOCX (Max 5MB each)
+                  Accepted formats: PDF, JPG, PNG, DOC, DOCX (Max 5MB each, 10 files total)
                 </p>
               </div>
 
+              {errors.documents && (
+                <div className="flex items-center text-red-500 text-sm">
+                  <AlertCircle size={16} className="mr-1" />
+                  {errors.documents}
+                </div>
+              )}
+
               {formData.documents.length > 0 && (
                 <div className="space-y-2">
-                  <h4 className="font-medium text-gray-900">Uploaded Documents:</h4>
+                  <h4 className="font-medium text-gray-900">
+                    Uploaded Documents ({formData.documents.length}/10):
+                  </h4>
                   {formData.documents.map((doc, index) => (
                     <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-2 flex-1">
                         <FileText size={20} className="text-gray-400" />
-                        <span className="text-sm text-gray-700">{doc.name}</span>
-                        <span className="text-xs text-gray-500">
-                          ({(doc.size / 1024 / 1024).toFixed(2)} MB)
-                        </span>
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2">
+                            <span className="text-sm text-gray-700">{doc.name}</span>
+                            <span className="text-xs text-gray-500">
+                              ({(doc.size / 1024 / 1024).toFixed(2)} MB)
+                            </span>
+                          </div>
+                          <select
+                            value={doc.category || ''}
+                            onChange={(e) => handleDocumentCategoryChange(index, e.target.value)}
+                            className="mt-1 text-xs border border-gray-300 rounded px-2 py-1 w-full max-w-xs"
+                          >
+                            <option value="">Select document type *</option>
+                            {documentTypes.map((type) => (
+                              <option key={type} value={type}>
+                                {type}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                       </div>
                       <button
                         type="button"
                         onClick={() => removeDocument(index)}
-                        className="text-red-500 hover:text-red-700 text-sm"
+                        className="text-red-500 hover:text-red-700 text-sm ml-2"
                       >
                         Remove
                       </button>
@@ -743,6 +867,7 @@ const SellerRegister = () => {
                       errors.password ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="Create a strong password"
+                    maxLength={100}
                   />
                   <button
                     type="button"
@@ -751,13 +876,47 @@ const SellerRegister = () => {
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
-                  {errors.password && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={16} className="mr-1" />
-                      {errors.password}
-                    </div>
-                  )}
                 </div>
+                {errors.password && (
+                  <div className="mt-1 flex items-center text-red-500 text-sm">
+                    <AlertCircle size={16} className="mr-1" />
+                    {errors.password}
+                  </div>
+                )}
+                {formData.password && (
+                  <div className="mt-2 text-sm space-y-1">
+                    <div className="flex items-center space-x-2">
+                      <div className={`h-2 w-2 rounded-full ${formData.password.length >= 8 ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                      <span className={formData.password.length >= 8 ? 'text-green-600' : 'text-gray-500'}>
+                        At least 8 characters
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className={`h-2 w-2 rounded-full ${/[A-Z]/.test(formData.password) ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                      <span className={/[A-Z]/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}>
+                        One uppercase letter
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className={`h-2 w-2 rounded-full ${/[a-z]/.test(formData.password) ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                      <span className={/[a-z]/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}>
+                        One lowercase letter
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className={`h-2 w-2 rounded-full ${/\d/.test(formData.password) ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                      <span className={/\d/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}>
+                        One number
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className={`h-2 w-2 rounded-full ${/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                      <span className={/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}>
+                        One special character
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div>
@@ -765,7 +924,7 @@ const SellerRegister = () => {
                   Confirm Password *
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 z-10" size={20} />
                   <input
                     id="confirmPassword"
                     name="confirmPassword"
@@ -776,21 +935,28 @@ const SellerRegister = () => {
                       errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="Confirm your password"
+                    maxLength={100}
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 z-10"
                   >
                     {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
-                  {errors.confirmPassword && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={16} className="mr-1" />
-                      {errors.confirmPassword}
-                    </div>
-                  )}
                 </div>
+                {errors.confirmPassword && (
+                  <div className="mt-1 flex items-center text-red-500 text-sm">
+                    <AlertCircle size={16} className="mr-1" />
+                    {errors.confirmPassword}
+                  </div>
+                )}
+                {formData.confirmPassword && formData.password === formData.confirmPassword && (
+                  <div className="mt-1 flex items-center text-green-600 text-sm">
+                    <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>
+                    Passwords match
+                  </div>
+                )}
               </div>
             </div>
           </div>
