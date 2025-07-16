@@ -6,8 +6,7 @@ import {
   TrendingUp,
   Settings,
   LogOut,
-  X,
-  Menu,
+  X
 } from "lucide-react";
 import doko from "../../../assets/doko.png";
 

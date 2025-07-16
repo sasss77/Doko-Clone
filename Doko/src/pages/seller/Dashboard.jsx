@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Package, ShoppingBag, DollarSign, Users, Star, TrendingUp, Eye, ArrowUpRight } from 'lucide-react';
-import StatCard from '../common/StatCard';
-import ProductForm from '../common/ProductForm';
-import { mockData } from '../../utils/constants';
+import  StatCard from '../../components/seller/common/StatCard.jsx';
+import ProductCard from '../../components/seller/common/ProductCard.jsx';
+import { mockData } from '../../components/utils/constants.js';
 
 const Dashboard = ({ onTabChange }) => {
   const { stats, recentOrders, topProducts } = mockData;

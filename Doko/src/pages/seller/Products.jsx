@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Plus, Search, Filter, Grid, List, Star, Edit, Trash2, Eye, X, Tag, Calendar, Percent } from 'lucide-react';
-import ProductCard from '../common/ProductCard'; // Assuming these are correctly imported
-import ProductForm from '../common/ProductForm'; // Assuming these are correctly imported
-import { mockData } from '../../utils/constants'; // Assuming this is correctly imported
+import ProductCard from '../../components/seller/common/ProductCard' // Assuming these are correctly imported
+import ProductForm from '../../components/seller/common/ProductForm'; // Assuming these are correctly imported
+import { mockData } from '../../components/utils/constants';
 
 const Products = () => {
   const [showForm, setShowForm] = useState(false);

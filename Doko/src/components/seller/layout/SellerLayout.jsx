@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import Dashboard from '../pages/Dashboard';
-import Products from '../pages/Products';
-import Orders from '../pages/Orders';
-import Customers from '../pages/Customers';
-import Analytics from '../pages/Analytics';
-import Settings from '../pages/Settings';
+import { Outlet } from 'react-router-dom';
 
 const SellerLayout = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -50,25 +45,6 @@ const SellerLayout = () => {
     setSidebarOpen(false); // Close sidebar on mobile after selection
   };
 
-  const renderContent = () => {
-    switch(activeTab) {
-      case 'dashboard':
-        return <Dashboard onTabChange={handleTabChange} />;
-      case 'products':
-        return <Products />;
-      case 'orders':
-        return <Orders />;
-      case 'customers':
-        return <Customers />;
-      case 'analytics':
-        return <Analytics />;
-      case 'settings':
-        return <Settings />;
-      default:
-        return <Dashboard onTabChange={handleTabChange} />;
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Sidebar 
@@ -86,7 +62,7 @@ const SellerLayout = () => {
           setSidebarOpen={setSidebarOpen}
         />
         <main className="p-4 sm:p-6 lg:p-8">
-          {renderContent()}
+          <Outlet />
         </main>
       </div>
     </div>
