@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import Login from "./Login";
-import Login from "../src/seller/pages/Login";
+import Login from "./pages/Login";
 import Cart from "./cart";
 import About from "./About";
 import Wishlist from "./Wishlist";
@@ -24,9 +24,9 @@ import AddSeller from "./AddSeller";
 import AdminDashboard from "./AdminDashboard";
 import PrivacyPolicy from "./PrivacyPolicy";
 import TermsOfUse from "./TermsOfUse";
-import SellerLayout from "../src/seller/components/seller/layout/SellerLayout";
-import UserRegister from "../src/seller/pages/UserRegister";
-import SellerRegister from "../src/seller/pages/SellerRegister";
+import SellerLayout from "./components/seller/layout/SellerLayout";
+import UserRegister from "./pages/UserRegister";
+import SellerRegister from "./pages/SellerRegister";
 
 const App = () => {
   return (

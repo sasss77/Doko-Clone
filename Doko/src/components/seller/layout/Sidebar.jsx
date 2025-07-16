@@ -9,7 +9,7 @@ import {
   X,
   Menu,
 } from "lucide-react";
-import doko from "../../../../assets/doko.png";
+import doko from "../../../assets/doko.png";
 
 const Sidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) => {
   const menuItems = [
