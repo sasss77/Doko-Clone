@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { 
-  EyeIcon, 
-  EyeSlashIcon, 
-  EnvelopeIcon, 
+import {
+  EyeIcon,
+  EyeSlashIcon,
+  EnvelopeIcon,
   LockClosedIcon,
   UserIcon,
   ExclamationTriangleIcon,
@@ -11,6 +11,7 @@ import {
   ShoppingBagIcon,
   CogIcon
 } from '@heroicons/react/24/outline';
+import Doko from "../../src/assets/doko.png"
 import { AuthContext } from '.././context/AuthContext';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -21,14 +22,14 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, isLoading, error } = useContext(AuthContext);
-  
+
   const [selectedRole, setSelectedRole] = useState('customer');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     rememberMe: false
   });
-  
+
   const [formErrors, setFormErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
@@ -83,7 +84,7 @@ const LoginPage = () => {
       ...prev,
       [field]: value
     }));
-    
+
     // Clear error when user starts typing
     if (formErrors[field]) {
       setFormErrors(prev => ({
@@ -95,33 +96,33 @@ const LoginPage = () => {
 
   const validateForm = () => {
     const errors = {};
-    
+
     if (!formData.email.trim()) {
       errors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = 'Please enter a valid email address';
     }
-    
+
     if (!formData.password.trim()) {
       errors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       errors.password = 'Password must be at least 6 characters';
     }
-    
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       try {
         await login(formData.email, formData.password, selectedRole, formData.rememberMe);
-        
+
         // Navigate based on role
-        const redirectPath = selectedRole === 'admin' ? '/admin' : 
-                            selectedRole === 'seller' ? '/seller' : from;
+        const redirectPath = selectedRole === 'admin' ? '/admin' :
+          selectedRole === 'seller' ? '/seller' : from;
         navigate(redirectPath, { replace: true });
       } catch (err) {
         console.error('Login error:', err);
@@ -157,17 +158,14 @@ const LoginPage = () => {
           {/* Header */}
           <div className="text-center">
             <Link to="/" className="flex items-center justify-center space-x-3 mb-6">
-              <div className="bg-gradient-to-r from-red-600 to-blue-600 p-3 rounded-full">
-                <span className="text-white font-bold text-2xl">🧺</span>
+              <div className=" to-blue-600 p-3 rounded-full">
+                <span className="text-white font-bold text-2xl"><img src={Doko} alt="" /></span>
               </div>
               <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-red-600 to-blue-600 bg-clip-text text-transparent">
-                  Doko
-                </h1>
-                <p className="text-sm text-gray-600">Authentic Nepal</p>
+
               </div>
             </Link>
-            
+
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
               Welcome Back! 🙏
             </h2>
@@ -194,37 +192,31 @@ const LoginPage = () => {
                   <div
                     key={role.id}
                     onClick={() => handleRoleChange(role.id)}
-                    className={`relative p-6 rounded-lg border-2 cursor-pointer transition-all duration-300 hover:shadow-md ${
-                      selectedRole === role.id
-                        ? `${role.borderColor} ${role.bgColor} transform scale-105`
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
+                    className={`relative p-6 rounded-lg border-2 cursor-pointer transition-all duration-300 hover:shadow-md ${selectedRole === role.id
+                      ? `${role.borderColor} ${role.bgColor} transform scale-105`
+                      : 'border-gray-200 hover:border-gray-300'
+                      }`}
                   >
                     <div className="text-center">
-                      <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full mb-3 ${
-                        selectedRole === role.id ? 'bg-white' : role.bgColor
-                      }`}>
-                        <Icon className={`h-6 w-6 ${
-                          selectedRole === role.id ? role.textColor : 'text-gray-600'
-                        }`} />
+                      <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full mb-3 ${selectedRole === role.id ? 'bg-white' : role.bgColor
+                        }`}>
+                        <Icon className={`h-6 w-6 ${selectedRole === role.id ? role.textColor : 'text-gray-600'
+                          }`} />
                       </div>
-                      <h4 className={`text-lg font-semibold mb-1 ${
-                        selectedRole === role.id ? role.textColor : 'text-gray-900'
-                      }`}>
+                      <h4 className={`text-lg font-semibold mb-1 ${selectedRole === role.id ? role.textColor : 'text-gray-900'
+                        }`}>
                         {role.name}
                       </h4>
-                      <p className={`text-sm mb-2 ${
-                        selectedRole === role.id ? role.textColor : 'text-gray-500'
-                      }`}>
+                      <p className={`text-sm mb-2 ${selectedRole === role.id ? role.textColor : 'text-gray-500'
+                        }`}>
                         {role.nepaliName}
                       </p>
-                      <p className={`text-xs ${
-                        selectedRole === role.id ? role.textColor : 'text-gray-500'
-                      }`}>
+                      <p className={`text-xs ${selectedRole === role.id ? role.textColor : 'text-gray-500'
+                        }`}>
                         {role.description}
                       </p>
                     </div>
-                    
+
                     {selectedRole === role.id && (
                       <div className="absolute top-2 right-2">
                         <CheckCircleIcon className={`h-5 w-5 ${role.textColor}`} />
@@ -248,7 +240,7 @@ const LoginPage = () => {
                   </p>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-2 gap-2">
                 {currentRole.features.map((feature, index) => (
                   <div key={index} className={`flex items-center space-x-2 text-sm ${currentRole.textColor}`}>

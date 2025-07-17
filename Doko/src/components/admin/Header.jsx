@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, Bell, User, ChevronDown, LogOut, UserCircle, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import Doko from "../../../src/assets/doko.png"
 
 const Header = () => {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ const Header = () => {
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+              <h1 className="text-2xl font-bold text-gray-900"><img src={ Doko} alt="" />Admin Dashboard</h1>
             </div>
             
             <div className="flex items-center space-x-4">

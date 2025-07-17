@@ -23,6 +23,19 @@ const Products = () => {
     description: ''
   });
 
+  // NEW: Coupon state
+  const [coupons, setCoupons] = useState([]);
+  const [showCouponModal, setShowCouponModal] = useState(false);
+  const [couponData, setCouponData] = useState({
+    code: '',
+    type: 'percentage',
+    value: '',
+    minOrderAmount: '',
+    startDate: '',
+    endDate: '',
+    description: ''
+  });
+
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = filterCategory === 'all' || product.category === filterCategory;
@@ -34,6 +47,7 @@ const Products = () => {
     setShowForm(false);
     setShowViewModal(false);
     setShowDiscountModal(false);
+    setShowCouponModal(false);
     setEditingProduct(null);
     setSelectedProduct(null);
   };
@@ -42,6 +56,44 @@ const Products = () => {
     closeAllModals();
     setEditingProduct(null);
     setShowForm(true);
+  };
+
+  // NEW: Coupon handlers
+  const handleAddCoupon = () => {
+    closeAllModals();
+    setCouponData({
+      code: '',
+      type: 'percentage',
+      value: '',
+      minOrderAmount: '',
+      startDate: '',
+      endDate: '',
+      description: ''
+    });
+    setShowCouponModal(true);
+  };
+
+  const handleSaveCoupon = () => {
+    if (!couponData.code || !couponData.value || !couponData.startDate || !couponData.endDate) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    if (coupons.find(c => c.code.toUpperCase() === couponData.code.toUpperCase())) {
+      alert('Coupon code already exists');
+      return;
+    }
+
+    setCoupons([
+      ...coupons,
+      {
+        id: Date.now(),
+        ...couponData,
+        active: true
+      }
+    ]);
+    closeAllModals();
+    alert('Coupon created successfully ✓');
   };
 
   const handleEditProduct = (product) => {
@@ -152,6 +204,124 @@ const Products = () => {
     return now >= startDate && now <= endDate && discount.active;
   };
 
+  // NEW: Coupon Modal Component
+  const CouponModal = () => {
+    return (
+      <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50" onClick={closeAllModals}></div>
+        
+        <div className="relative bg-white rounded-2xl p-6 w-full max-w-xl shadow-2xl">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-800">Add Coupon</h2>
+            <button 
+              className="p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors" 
+              onClick={closeAllModals}
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Coupon Code</label>
+                <input
+                  value={couponData.code}
+                  onChange={e => setCouponData({ ...couponData, code: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="SAVE20"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Value {couponData.type === 'percentage' ? '(%)' : '(Rs)'}
+                </label>
+                <input
+                  type="number"
+                  value={couponData.value}
+                  onChange={e => setCouponData({ ...couponData, value: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="20"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Type</label>
+                <select
+                  value={couponData.type}
+                  onChange={e => setCouponData({ ...couponData, type: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                >
+                  <option value="percentage">Percentage (%)</option>
+                  <option value="fixed">Fixed Amount (Rs)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Min Order Amount (Rs)</label>
+                <input
+                  type="number"
+                  value={couponData.minOrderAmount}
+                  onChange={e => setCouponData({ ...couponData, minOrderAmount: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="1000"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Start Date</label>
+                <input
+                  type="date"
+                  value={couponData.startDate}
+                  onChange={e => setCouponData({ ...couponData, startDate: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">End Date</label>
+                <input
+                  type="date"
+                  value={couponData.endDate}
+                  onChange={e => setCouponData({ ...couponData, endDate: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+              <textarea
+                rows="3"
+                value={couponData.description}
+                onChange={e => setCouponData({ ...couponData, description: e.target.value })}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                placeholder="Special offer for valued customers..."
+              />
+            </div>
+
+            <div className="flex justify-end space-x-4 pt-4">
+              <button 
+                onClick={closeAllModals} 
+                className="px-6 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveCoupon}
+                className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:shadow-lg transition-all duration-200"
+              >
+                Save Coupon
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // Product View Modal Component
   const ProductViewModal = () => {
     if (!selectedProduct) return null;
@@ -163,7 +333,7 @@ const Products = () => {
       <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
         {/* Overlay */}
         <div
-          className="fixed inset-0 bg-opacity-50"
+          className="fixed inset-0 bg-black bg-opacity-50"
           onClick={() => setShowViewModal(false)}
         ></div>
 
@@ -185,7 +355,6 @@ const Products = () => {
               <div className="w-full h-64 bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl flex items-center justify-center">
                 <div className="text-gray-500 text-8xl">📦</div>
               </div>
-              {/* Additional product images could go here */}
             </div>
 
             {/* Product Information */}
@@ -306,7 +475,7 @@ const Products = () => {
       <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
         {/* Overlay */}
         <div
-          className="fixed inset-0 bg-opacity-50"
+          className="fixed inset-0 bg-black bg-opacity-50"
           onClick={() => setShowDiscountModal(false)}
         ></div>
 
@@ -443,13 +612,25 @@ const Products = () => {
             <h2 className="text-2xl font-bold text-gray-800">Products</h2>
             <p className="text-gray-600 mt-1">Manage your product inventory</p>
           </div>
-          <button
-            onClick={handleAddProduct}
-            className="flex items-center space-x-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-200"
-          >
-            <Plus size={20} />
-            <span className="font-medium">Add New Product</span>
-          </button>
+          
+          {/* Updated button section with both buttons */}
+          <div className="flex gap-2">
+            <button
+              onClick={handleAddProduct}
+              className="flex items-center space-x-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-200"
+            >
+              <Plus size={20} />
+              <span className="font-medium">Add New Product</span>
+            </button>
+            
+            <button
+              onClick={handleAddCoupon}
+              className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-200"
+            >
+              <Tag size={20} />
+              <span className="font-medium">Add Coupon</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -659,6 +840,9 @@ const Products = () => {
 
       {/* Discount Modal */}
       {showDiscountModal && <DiscountModal />}
+
+      {/* NEW: Coupon Modal */}
+      {showCouponModal && <CouponModal />}
     </div>
   );
 };

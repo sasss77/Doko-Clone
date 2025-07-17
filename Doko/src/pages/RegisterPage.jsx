@@ -13,6 +13,7 @@ import {
   ShoppingBagIcon,
   CogIcon
 } from '@heroicons/react/24/outline';
+import Doko from "../../src/assets/doko.png"
 import { AuthContext } from '.././context/AuthContext';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -265,14 +266,8 @@ const RegisterPage = () => {
           {/* Header */}
           <div className="text-center">
             <Link to="/" className="flex items-center justify-center space-x-3 mb-6">
-              <div className="bg-gradient-to-r from-red-600 to-blue-600 p-3 rounded-full">
-                <span className="text-white font-bold text-2xl">🧺</span>
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-red-600 to-blue-600 bg-clip-text text-transparent">
-                  Doko
-                </h1>
-                <p className="text-sm text-gray-600">Authentic Nepal</p>
+              <div className=" p-3 rounded-full">
+                <span className="text-white font-bold text-2xl"><img src={ Doko} alt="" /></span>
               </div>
             </Link>
             

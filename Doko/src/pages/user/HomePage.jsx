@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  ChevronLeftIcon, 
-  ChevronRightIcon, 
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
   StarIcon,
   TruckIcon,
   ShieldCheckIcon,
@@ -10,6 +10,21 @@ import {
   ArrowRightIcon,
   PlayIcon
 } from '@heroicons/react/24/outline';
+
+import Hero2 from "../../../src/assets/hero2.png"
+import Music_banner from "../../../src/assets/banner_music.jpg"
+import Handcrafts_banner from "../../../src/assets/handcrafts_banner.jpg"
+import Musical_instru from "../../../src/assets/category_music.jpg"
+import clothing from "../../../src/assets/dress_category.jpg"
+import tools from "../../../src/assets/tools_category.jpg"
+import grocery from "../../../src/assets/grocery_category.jpg"
+import handicrafts from "../../../src/assets/handicraft_landscape.jpg"
+
+import khukuri from "../../../src/assets/khukuri.jpg"
+import DhakaTopi from "../../../src/assets/DhakaTopi.jpg"
+import Dokoimg from "../../../src/assets/Doko_001.jpg"
+import sarangiimg from "../../../src/assets/sarangii.jpeg"
+
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 import ProductCard from '../../components/product/ProductCard';
 
@@ -33,7 +48,7 @@ const HomePage = () => {
       title: "Discover Authentic Nepal",
       subtitle: "स्वागतम्! Welcome to Doko",
       description: "Explore the rich cultural heritage of Nepal through our carefully curated collection of authentic handmade products, traditional instruments, and cultural treasures.",
-      image: "/api/placeholder/1200/600",
+      image: Hero2,
       cta: "Shop Now",
       ctaLink: "/categories",
       overlay: "bg-gradient-to-r from-red-900/80 to-blue-900/60"
@@ -43,7 +58,7 @@ const HomePage = () => {
       title: "Traditional Musical Instruments",
       subtitle: "संगीतको स्वर - Sounds of Nepal",
       description: "From the melodious Sarangi to the rhythmic Madal, discover authentic Nepali musical instruments crafted by skilled artisans.",
-      image: "/api/placeholder/1200/600",
+      image: Music_banner,
       cta: "Explore Music",
       ctaLink: "/products/musical-instruments",
       overlay: "bg-gradient-to-r from-purple-900/80 to-pink-900/60"
@@ -53,7 +68,7 @@ const HomePage = () => {
       title: "Handcrafted with Love",
       subtitle: "हस्तकलाको कलाकृति - Master Craftsmanship",
       description: "Each piece tells a story of skilled artisans who have preserved traditional techniques for generations.",
-      image: "/api/placeholder/1200/600",
+      image: Handcrafts_banner,
       cta: "View Handicrafts",
       ctaLink: "/products/handicrafts",
       overlay: "bg-gradient-to-r from-green-900/80 to-teal-900/60"
@@ -66,8 +81,7 @@ const HomePage = () => {
       id: 'musical-instruments',
       name: 'Musical Instruments',
       description: 'Traditional Nepali instruments',
-      icon: '🎵',
-      image: '/api/placeholder/300/200',
+      image: Musical_instru,
       productCount: 45,
       color: 'from-red-500 to-pink-500'
     },
@@ -75,8 +89,7 @@ const HomePage = () => {
       id: 'handicrafts',
       name: 'Handicrafts',
       description: 'Authentic handmade crafts',
-      icon: '🎨',
-      image: '/api/placeholder/300/200',
+      image: handicrafts,
       productCount: 78,
       color: 'from-blue-500 to-purple-500'
     },
@@ -84,8 +97,7 @@ const HomePage = () => {
       id: 'clothing',
       name: 'Traditional Clothing',
       description: 'Cultural attire & accessories',
-      icon: '👘',
-      image: '/api/placeholder/300/200',
+      image: clothing,
       productCount: 56,
       color: 'from-green-500 to-teal-500'
     },
@@ -93,8 +105,7 @@ const HomePage = () => {
       id: 'tools-crafts',
       name: 'Tools & Crafts',
       description: 'Traditional tools & utility items',
-      icon: '🔧',
-      image: '/api/placeholder/300/200',
+      image: tools,
       productCount: 34,
       color: 'from-yellow-500 to-orange-500'
     },
@@ -102,8 +113,7 @@ const HomePage = () => {
       id: 'grocery',
       name: 'Nepali Grocery',
       description: 'Traditional food items',
-      icon: '🥘',
-      image: '/api/placeholder/300/200',
+      image: grocery,
       productCount: 89,
       color: 'from-indigo-500 to-blue-500'
     }
@@ -116,7 +126,7 @@ const HomePage = () => {
       name: 'Handcrafted Sarangi',
       price: 15000,
       originalPrice: 18000,
-      image: '/api/placeholder/300/300',
+      image: sarangiimg,
       rating: 4.8,
       reviewCount: 24,
       category: 'musical-instruments',
@@ -128,7 +138,7 @@ const HomePage = () => {
       id: 2,
       name: 'Traditional Doko Basket',
       price: 2500,
-      image: '/api/placeholder/300/300',
+      image: Dokoimg,
       rating: 4.9,
       reviewCount: 31,
       category: 'tools-crafts',
@@ -140,7 +150,7 @@ const HomePage = () => {
       name: 'Handwoven Dhaka Topi',
       price: 1200,
       originalPrice: 1500,
-      image: '/api/placeholder/300/300',
+      image: DhakaTopi,
       rating: 4.7,
       reviewCount: 18,
       category: 'clothing',
@@ -151,7 +161,7 @@ const HomePage = () => {
       id: 4,
       name: 'Authentic Khukuri',
       price: 8000,
-      image: '/api/placeholder/300/300',
+      image: khukuri,
       rating: 5.0,
       reviewCount: 42,
       category: 'tools-crafts',
@@ -262,11 +272,10 @@ const HomePage = () => {
           {heroSlides.map((slide, index) => (
             <div
               key={slide.id}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                index === currentSlide ? 'opacity-100' : 'opacity-0'
-              }`}
+              className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100' : 'opacity-0'
+                }`}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-black/30" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/40" />
               <img
                 src={slide.image}
                 alt={slide.title}
@@ -286,15 +295,33 @@ const HomePage = () => {
         {/* Content */}
         <div className="relative z-10 flex items-center justify-center h-full">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center text-white">
+            <div className="max-w-4xl mx-auto text-center">
               <div className="transform transition-all duration-1000 translate-y-0">
-                <h1 className="text-5xl md:text-7xl font-bold mb-4 leading-tight">
+                <h1
+                  className="text-5xl md:text-7xl font-bold mb-4 leading-tight"
+                  style={{
+                    color: '#ffffff',
+                    textShadow: '4px 4px 8px rgba(0,0,0,0.9), 2px 2px 4px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.7)'
+                  }}
+                >
                   {heroSlides[currentSlide].title}
                 </h1>
-                <p className="text-xl md:text-2xl mb-4 text-yellow-300 font-medium">
+                <p
+                  className="text-xl md:text-2xl mb-4 font-medium"
+                  style={{
+                    color: '#fde047',
+                    textShadow: '3px 3px 6px rgba(0,0,0,0.8), 1px 1px 3px rgba(0,0,0,0.7)'
+                  }}
+                >
                   {heroSlides[currentSlide].subtitle}
                 </p>
-                <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
+                <p
+                  className="text-lg md:text-xl mb-8 max-w-2xl mx-auto leading-relaxed"
+                  style={{
+                    color: '#ffffff',
+                    textShadow: '3px 3px 6px rgba(0,0,0,0.8), 1px 1px 3px rgba(0,0,0,0.7)'
+                  }}
+                >
                   {heroSlides[currentSlide].description}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -328,11 +355,10 @@ const HomePage = () => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentSlide 
-                  ? 'bg-white scale-125' 
-                  : 'bg-white/50 hover:bg-white/75'
-              }`}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide
+                ? 'bg-white scale-125'
+                : 'bg-white/50 hover:bg-white/75'
+                }`}
             />
           ))}
         </div>
@@ -388,7 +414,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Categories Section */}
+      {/* Categories Section - UPDATED */}
       <section className="py-20 bg-gradient-to-br from-red-50 to-blue-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -399,19 +425,19 @@ const HomePage = () => {
               Discover authentic Nepali products across various categories, each telling a unique story of our rich cultural heritage.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {categories.map((category) => (
               <Link
                 key={category.id}
                 to={`/products/${category.id}`}
-                className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+                className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-4 bg-white"
               >
-                <div className="aspect-w-16 aspect-h-12 bg-gray-200">
+                <div className="relative">
                   <img
                     src={category.image}
                     alt={category.name}
-                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-38 object-cover group-hover:scale-110 transition-transform duration-300"
                     onError={(e) => {
                       e.target.style.display = 'none';
                       e.target.nextSibling.style.display = 'flex';
@@ -420,26 +446,24 @@ const HomePage = () => {
                   <div className="w-full h-48 bg-gradient-to-br from-red-100 to-blue-100 flex items-center justify-center hidden">
                     <span className="text-6xl opacity-50">{category.icon}</span>
                   </div>
+                  {/* Hover overlay */}
+                  <div className={`absolute inset-0 bg-gradient-to-t ${category.color} opacity-0 group-hover:opacity-75 transition-opacity duration-300`} />
                 </div>
-                <div className={`absolute inset-0 bg-gradient-to-t ${category.color} opacity-0 group-hover:opacity-90 transition-opacity duration-300`} />
-                <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <span className="text-4xl mb-2 block group-hover:scale-110 transition-transform duration-300">
-                      {category.icon}
-                    </span>
-                    <h3 className="text-xl font-bold text-white mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      {category.name}
-                    </h3>
-                    <p className="text-white/90 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      {category.description}
-                    </p>
-                    <Badge 
-                      variant="success" 
-                      className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    >
-                      {category.productCount} Products
-                    </Badge>
-                  </div>
+
+                {/* Always visible title and info */}
+                <div className="p-4">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-white transition-colors duration-300">
+                    {category.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-3 group-hover:text-white/90 transition-colors duration-300">
+                    {category.description}
+                  </p>
+                  <Badge
+                    variant="success"
+                    className="group-hover:bg-white/20 group-hover:text-white transition-colors duration-300"
+                  >
+                    {category.productCount} Products
+                  </Badge>
                 </div>
               </Link>
             ))}
@@ -458,19 +482,19 @@ const HomePage = () => {
               Hand-picked authentic Nepali products that showcase the finest craftsmanship and cultural heritage.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {featuredProducts.map((product) => (
               <div key={product.id} className="group">
                 <ProductCard
                   product={product}
-                  onQuickView={() => {}}
+                  onQuickView={() => { }}
                   className="h-full"
                 />
               </div>
             ))}
           </div>
-          
+
           <div className="text-center mt-12">
             <Link to="/products">
               <Button variant="nepal" size="lg" className="transform hover:scale-105 transition-transform">
@@ -489,7 +513,7 @@ const HomePage = () => {
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpolygon points='50,0 60,40 100,50 60,60 50,100 40,60 0,50 40,40'/%3E%3C/g%3E%3C/svg%3E")`
           }} />
         </div>
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -513,8 +537,8 @@ const HomePage = () => {
               </div>
             </div>
             <Link to="/about">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="lg"
                 className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30"
               >
@@ -536,7 +560,7 @@ const HomePage = () => {
               Real stories from customers who have experienced the authentic quality of our Nepali products.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial) => (
               <div key={testimonial.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
