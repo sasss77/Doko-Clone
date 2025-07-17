@@ -335,14 +335,7 @@ const HomePage = () => {
                       <ArrowRightIcon className="h-5 w-5 ml-2" />
                     </Button>
                   </Link>
-                  <Button
-                    variant="outline"
-                    size="xl"
-                    className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30"
-                  >
-                    <PlayIcon className="h-5 w-5 mr-2" />
-                    Watch Story
-                  </Button>
+                 
                 </div>
               </div>
             </div>
@@ -414,7 +407,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Categories Section - UPDATED */}
+      {/* Categories Section - FIXED */}
       <section className="py-20 bg-gradient-to-br from-red-50 to-blue-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -433,24 +426,26 @@ const HomePage = () => {
                 to={`/products/${category.id}`}
                 className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-4 bg-white"
               >
-                <div className="relative">
+                {/* Image container with overlay */}
+                <div className="relative h-48 overflow-hidden">
                   <img
                     src={category.image}
                     alt={category.name}
-                    className="w-full h-38 object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     onError={(e) => {
                       e.target.style.display = 'none';
                       e.target.nextSibling.style.display = 'flex';
                     }}
                   />
-                  <div className="w-full h-48 bg-gradient-to-br from-red-100 to-blue-100 flex items-center justify-center hidden">
+                  {/* Fallback for broken images */}
+                  <div className="w-full h-full bg-gradient-to-br from-red-100 to-blue-100 flex items-center justify-center hidden">
                     <span className="text-6xl opacity-50">{category.icon}</span>
                   </div>
-                  {/* Hover overlay */}
+                  {/* Hover overlay - now properly positioned */}
                   <div className={`absolute inset-0 bg-gradient-to-t ${category.color} opacity-0 group-hover:opacity-75 transition-opacity duration-300`} />
                 </div>
 
-                {/* Always visible title and info */}
+                {/* Content section */}
                 <div className="p-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-white transition-colors duration-300">
                     {category.name}
